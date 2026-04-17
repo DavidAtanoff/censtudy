@@ -15,6 +15,7 @@ use axum::{
 use tower_http::{
     cors::CorsLayer,
     limit::RequestBodyLimitLayer,
+    services::{ServeDir, ServeFile},
 };
 use std::sync::Arc;
 use sqlx::SqlitePool;
@@ -144,6 +145,13 @@ async fn main() {
                 .allow_headers([ACCEPT, CONTENT_TYPE]),
         )
         .with_state(app_state);
+
+    // Serve static files from the 'dist' directory
+    // Any route not matched by the API will serve the frontend's index.html
+    let serve_dir = ServeDir::new("dist")
+        .not_found_service(ServeFile::new("dist/index.html"));
+
+    let app = app.fallback_service(serve_dir);
 
     let port = std::env::var("PORT")
         .ok()
