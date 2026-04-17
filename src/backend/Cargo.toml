@@ -13,9 +13,6 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 sqlx = { version = "=0.7.4", features = ["runtime-tokio-rustls", "sqlite", "chrono", "migrate"] }
 chrono = "=0.4.38"
-icu_collections = "=1.5.0"
-icu_locid = "=1.5.0"
-icu_provider = "=1.5.0"
 uuid = { version = "1.0", features = ["v4", "serde"] }
 reqwest = { version = "0.11", features = ["json"] }
 tracing = "0.1"
@@ -26,3 +23,17 @@ jsonwebtoken = "9.2"
 ammonia = "3.3"
 urlencoding = "2.1"
 time = "=0.3.36"
+
+[patch.crates-io]
+icu_collections = { version = "=1.5.0" }
+icu_locid = { version = "=1.5.0" }
+icu_locid_transform = { version = "=1.5.0" }
+icu_normalizer = { version = "=1.5.0" }
+icu_normalizer_data = { version = "=1.5.0" }
+icu_properties = { version = "=1.5.0" }
+icu_properties_data = { version = "=1.5.0" }
+icu_provider = { version = "=1.5.0" }
+icu_provider_macros = { version = "=1.5.0" }
+time = { version = "=0.3.36" }
+time-macros = { version = "=0.2.18" }
+time-core = { version = "=0.1.2" }
