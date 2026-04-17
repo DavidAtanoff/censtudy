@@ -40,7 +40,7 @@ export default function Login() {
           <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-black/10 bg-white shadow-[0_16px_40px_-28px_rgba(15,23,42,0.3)]">
             <BookOpen className="h-7 w-7 text-black" strokeWidth={1.5} />
           </div>
-          <h1 className="text-4xl font-semibold tracking-[-0.06em] text-black">CenLearn</h1>
+          <h1 className="text-4xl font-semibold tracking-[-0.06em] text-black">CenStudy</h1>
           <p className="mt-3 text-sm leading-7 text-black/60">
             Private study workspace for structured guides, adaptive recall, and Quizlet-plus-Brilliant style learning loops.
           </p>
@@ -81,11 +81,7 @@ export default function Login() {
               {isLoading ? 'Checking sign-in...' : 'Continue with Microsoft'}
             </Button>
 
-            <p className="mt-6 text-center text-[11px] leading-6 text-black/45">
-              Azure app registration required:
-              {' '}
-              `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, `AZURE_TENANT_ID`, `AZURE_REDIRECT_URI`, `JWT_SECRET`
-            </p>
+
           </CardContent>
         </Card>
       </div>

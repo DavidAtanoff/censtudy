@@ -1,4 +1,4 @@
-# CenLearn Frontend
+# CenStudy Frontend
 
 React + TypeScript frontend powered by Vite and Tailwind CSS.
 

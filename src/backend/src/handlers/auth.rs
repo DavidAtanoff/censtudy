@@ -18,8 +18,8 @@ use uuid::Uuid;
 
 use crate::{db, models::User, AppState};
 
-const SESSION_COOKIE: &str = "cenlearn_session";
-const OAUTH_STATE_COOKIE: &str = "cenlearn_oauth_state";
+const SESSION_COOKIE: &str = "censtudy_session";
+const OAUTH_STATE_COOKIE: &str = "censtudy_oauth_state";
 const MICROSOFT_SCOPE: &str = "openid profile email User.Read";
 
 #[derive(Debug, Serialize)]

@@ -43,7 +43,7 @@ async fn main() {
 
     // Initialize database
     let database_url = std::env::var("DATABASE_URL")
-        .unwrap_or_else(|_| "sqlite:cenlearn.db?mode=rwc".to_string())
+        .unwrap_or_else(|_| "sqlite:censtudy.db?mode=rwc".to_string())
         .trim()
         .to_string();
     

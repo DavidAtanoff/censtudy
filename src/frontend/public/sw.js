@@ -1,4 +1,4 @@
-const CACHE_PREFIX = 'cenlearn-'
+const CACHE_PREFIX = 'censtudy-'
 
 self.addEventListener('install', (event) => {
   self.skipWaiting()

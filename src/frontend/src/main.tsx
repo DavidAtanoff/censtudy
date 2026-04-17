@@ -28,7 +28,7 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
     if ('caches' in window) {
       window.caches.keys().then((cacheNames) => {
         cacheNames
-          .filter((cacheName) => cacheName.startsWith('cenlearn-'))
+          .filter((cacheName) => cacheName.startsWith('censtudy-'))
           .forEach((cacheName) => {
             void window.caches.delete(cacheName)
           })

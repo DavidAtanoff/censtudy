@@ -1,6 +1,6 @@
 {
-  "name": "CenLearn - Berkeley Prep Study Platform",
-  "short_name": "CenLearn",
+  "name": "CenStudy - Learn Smarter",
+  "short_name": "CenStudy",
   "description": "Evidence-based learning platform for Berkeley Prep students",
   "start_url": "/",
   "display": "standalone",

@@ -1,6 +1,6 @@
 # StudyML Language Guide
 
-StudyML is CenLearn's authoring language for study guides, flashcard decks, quizzes, and tests. It combines Markdown, lightweight formatting tags, live knowledge checks, and sandboxed interactive embeds so one source can drive a Quizlet-like recall flow and a Brilliant-like concept flow.
+StudyML is CenStudy's authoring language for study guides, flashcard decks, quizzes, and tests. It combines Markdown, lightweight formatting tags, live knowledge checks, and sandboxed interactive embeds so one source can drive a Quizlet-like recall flow and a Brilliant-like concept flow.
 
 StudyML is designed around three rules:
 
@@ -20,7 +20,7 @@ The same language is used across several content types:
 | `flashcard-deck` | Drill memory with spaced repetition, write-to-recall, and matching. | `::flashcard` |
 | `quiz` / `test` | Assess understanding with shuffled questions and AI-graded short answers. | `::question` |
 
-You can create multiple flashcard decks and multiple quizzes inside the same unit. CenLearn treats each content item as its own reusable training set.
+You can create multiple flashcard decks and multiple quizzes inside the same unit. CenStudy treats each content item as its own reusable training set.
 
 ---
 
@@ -375,7 +375,7 @@ That combination is usually enough to create notes that feel polished without ma
 
 ## 13. Validation Rules
 
-CenLearn currently validates these conditions before save:
+CenStudy currently validates these conditions before save:
 
 - study guides cannot be empty
 - flashcard decks must contain at least one valid `::flashcard`
