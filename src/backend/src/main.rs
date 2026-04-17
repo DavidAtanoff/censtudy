@@ -145,11 +145,17 @@ async fn main() {
         )
         .with_state(app_state);
 
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
+    let port = std::env::var("PORT")
+        .ok()
+        .and_then(|p| p.parse().ok())
+        .unwrap_or(3000);
+
+    let addr = format!("0.0.0.0:{}", port);
+    let listener = tokio::net::TcpListener::bind(&addr)
         .await
         .unwrap();
     
-    tracing::info!("Server running on http://127.0.0.1:3000");
+    tracing::info!("Server running on http://{}", addr);
     
     axum::serve(listener, app).await.unwrap();
 }

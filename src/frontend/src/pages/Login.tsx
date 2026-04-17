@@ -3,9 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { BookOpen } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
-import { getAuthConfig, getCurrentUser } from '@/lib/api'
-
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+import { getAuthConfig, getCurrentUser, API_BASE } from '@/lib/api'
 
 export default function Login() {
   const [searchParams] = useSearchParams()

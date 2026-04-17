@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { File as FileIcon, Link as LinkIcon, Plus, Trash2, Download, ExternalLink } from 'lucide-react'
-import { getResources, createResource, deleteResource, uploadFile } from '@/lib/api'
+import { getResources, createResource, deleteResource, uploadFile, API_BASE } from '@/lib/api'
 import Button from './ui/Button'
 import Input from './ui/Input'
 import { Card, CardContent } from './ui/Card'
@@ -178,8 +178,8 @@ export default function DriveTab({ unitId }: Props) {
                   <a
                     href={
                       resource.file_id
-                        ? `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/files/${resource.file_id}/download`
-                        : `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/${resource.url}`
+                        ? `${API_BASE}/api/files/${resource.file_id}/download`
+                        : `${API_BASE}/${resource.url}`
                     }
                     target="_blank"
                     rel="noreferrer"

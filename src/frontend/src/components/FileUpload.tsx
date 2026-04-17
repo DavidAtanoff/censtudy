@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { X, File, Image, Music } from 'lucide-react'
-import { uploadFile } from '@/lib/api'
+import { uploadFile, API_BASE } from '@/lib/api'
 
 interface Props {
   onUploadComplete: (fileUrl: string, fileId: number) => void
@@ -9,7 +9,6 @@ interface Props {
 }
 
 export default function FileUpload({ onUploadComplete, acceptedTypes = "image/*,application/pdf,audio/*", maxSize = 10 }: Props) {
-  const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:3000'
   const [uploading, setUploading] = useState(false)
   const [preview, setPreview] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -39,7 +38,7 @@ export default function FileUpload({ onUploadComplete, acceptedTypes = "image/*,
     try {
       const response = await uploadFile(file)
 
-      const fileUrl = `${apiBase}/api/files/${response.data.id}/download`
+      const fileUrl = `${API_BASE}/api/files/${response.data.id}/download`
       onUploadComplete(fileUrl, response.data.id)
     } catch (err) {
       setError('Failed to upload file')

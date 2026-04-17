@@ -1,7 +1,10 @@
 import axios from 'axios'
 
+export const API_BASE = import.meta.env.VITE_API_URL || 
+  (import.meta.env.DEV ? 'http://localhost:3000' : 'https://censtudy.onrender.com')
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+  baseURL: API_BASE,
   withCredentials: true,
 })
 
@@ -181,7 +184,10 @@ export const deleteResource = (id: number) => api.delete(`/api/resources/${id}`)
 export const uploadFile = (file: File) => {
   const formData = new FormData()
   formData.append('file', file)
-  return api.post<FileMetadata>('/api/files', formData)
+  return api.post<FileMetadata>('/api/files', formData).then(response => {
+    const fileUrl = `${API_BASE}/api/files/${response.data.id}/download`
+    return { ...response, data: { ...response.data, fileUrl } }
+  })
 }
 
 // Stats
