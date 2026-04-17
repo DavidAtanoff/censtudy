@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometry Ch 10: The Ultimate Circles Study Guide</title>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #EEF2FF;
+            --secondary: #ec4899;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --warning: #FEF3C7;
+            --warning-text: #92400E;
+            --success: #10B981;
+            --danger: #EF4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 { margin: 0; font-size: 2.5rem; }
+        header p { font-size: 1.2rem; opacity: 0.9; }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            background-color: white;
+            color: var(--primary);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .nav-links a:hover { transform: translateY(-2px); background: var(--primary); color: white; }
+
+        section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        .formula-box {
+            background-color: var(--primary-light);
+            border-left: 5px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+        }
+
+        .dummy-translation {
+            background-color: var(--warning);
+            color: var(--warning-text);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-style: italic;
+            border-left: 4px solid #F59E0B;
+        }
+
+        .process-box {
+            background-color: #ecfdf5;
+            border: 2px solid #34d399;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .process-box h3 { color: #047857; margin-top: 0; }
+        .process-box ol { margin: 0; padding-left: 1.5rem; }
+        .process-box li { margin-bottom: 0.5rem; }
+
+        .interactive-box {
+            border: 2px dashed #cbd5e1;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            background: #fafafa;
+            margin-top: 1rem;
+        }
+
+        canvas {
+            background: white;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1rem auto;
+            display: block;
+            max-width: 100%;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 1rem;
+            font-weight: bold;
+            flex-wrap: wrap;
+        }
+
+        input[type=range] {
+            width: 200px;
+            accent-color: var(--secondary);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-group button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: #e2e8f0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        
+        .btn-group button.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .math-highlight {
+            font-family: monospace;
+            background: #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🍕 The "Dummy-Proof" Guide to Circles</h1>
+    <p>Visual, interactive, and completely broken down for test day.</p>
+</header>
+
+<div class="container">
+    
+    <div class="nav-links">
+        <a href="#sec10-1">10.1 Basics</a>
+        <a href="#sec10-2">10.2 Angles & Arcs</a>
+        <a href="#sec10-3">10.3 Chords</a>
+        <a href="#sec10-4">10.4 Inscribed</a>
+        <a href="#sec10-5">10.5 Tangents</a>
+        <a href="#sec10-6">10.6 Angle Math</a>
+        <a href="#sec10-7">10.7 Segments</a>
+        <a href="#sec10-8">10.8 Equations</a>
+    </div>
+
+    <!-- SECTION 10.1 -->
+    <section id="sec10-1">
+        <h2>10.1 - Basics & Circumference</h2>
+        <p>A circle is just a bunch of points perfectly spaced out from a center dot. </p>
+        
+        <div class="dummy-translation">
+            🧠 <b>Dummy Translation:</b> Think of a pizza. The <b>radius</b> is a slice from the center to the crust. The <b>diameter</b> is a cut straight across the whole pizza. <b>Circumference</b> is the length of the outer crust.
+        </div>
+
+        <div class="formula-box">
+            Circumference (C) = 2 × π × r &nbsp;&nbsp;OR&nbsp;&nbsp; C = π × d
+        </div>
+
+        <div class="interactive-box">
+            <h3>Visualizer: Radius & Diameter</h3>
+            <canvas id="canvas-10-1" width="400" height="250"></canvas>
+            <div class="slider-container">
+                <label for="radius-slider">Radius Size:</label>
+                <input type="range" id="radius-slider" min="10" max="100" value="50">
+                <span id="radius-val">50</span>
+            </div>
+            <p style="font-size: 1.2rem;">Diameter: <b id="dia-val" style="color:var(--secondary)">100</b> | Circumference: <b id="circ-val" style="color:var(--primary)">314.16</b></p>
+        </div>
+    </section>
+
+    <!-- SECTION 10.2 -->
+    <section id="sec10-2">
+        <h2>10.2 - Central Angles & Arcs</h2>
+        <p>A <b>Central Angle</b> is an angle whose vertex (pointy part) sits exactly dead-center in the circle.</p>
+        <p>An <b>Arc</b> is just a piece of the outside crust. Minor arcs are small (&lt;180&deg;). Major arcs are massive (&gt;180&deg;).</p>
+
+        <div class="dummy-translation">
+            🧠 <b>Dummy Translation:</b> The size of your pizza slice (Central Angle) is EXACTLY EQUAL to the degree size of your crust (Arc Measure). 
+        </div>
+
+        <div class="interactive-box">
+            <h3>Visualizer: The Pizza Slice Match</h3>
+            <canvas id="canvas-10-2" width="400" height="250"></canvas>
+            <div class="slider-container">
+                <label for="angle-slider">Change Slice Size:</label>
+                <input type="range" id="angle-slider" min="10" max="170" value="70">
+            </div>
+            <p>Central Angle = <b id="angle-val" style="color:var(--primary)">70&deg;</b> SO Intercepted Arc = <b id="arc-val" style="color:var(--secondary)">70&deg;</b></p>
+        </div>
+    </section>
+
+    <!-- SECTION 10.3 -->
+    <section id="sec10-3">
+        <h2>10.3 - Arcs and Chords</h2>
+        <p>A <b>Chord</b> is a straight line connecting two points on the crust. <b>The 90-Degree Rule:</b> If a radius hits a chord at a perfect 90&deg; angle, it chops that chord perfectly in half!</p>
+        
+        <div class="process-box">
+            <h3>🛠️ How to Solve "Missing Chord" Problems:</h3>
+            <ol>
+                <li><b>Draw a line</b> from the center to the edge of the chord. Congratulations, you just drew a Radius! You now have a Right Triangle.</li>
+                <li><b>Identify your pieces:</b> The radius is the hypotenuse (<span class="math-highlight">c</span>). The distance from the center is a leg (<span class="math-highlight">a</span>). Half the chord is the other leg (<span class="math-highlight">b</span>).</li>
+                <li><b>Use Pythagorean Theorem:</b> <span class="math-highlight">a² + b² = c²</span> to find the missing side.</li>
+                <li><b>Multiply by 2</b> if they ask for the full chord length!</li>
+            </ol>
+        </div>
+
+        <div class="interactive-box">
+            <h3>Visualizer: The Hidden Right Triangle</h3>
+            <p>Move the slider to push the chord away from the center. Watch the Right Triangle form!</p>
+            <canvas id="canvas-10-3" width="400" height="250"></canvas>
+            <div class="slider-container">
+                <label>Distance from center (a):</label>
+                <input type="range" id="chord-dist-slider" min="0" max="99" value="60">
+            </div>
+            <p style="font-family: monospace; font-size: 1.1rem;">
+                Radius (<span style="color:#ef4444">c</span>) = 100<br>
+                <span style="color:#10b981">a²</span> + <span style="color:#4F46E5">b²</span> = <span style="color:#ef4444">c²</span> &rarr; 
+                <span id="math-a" style="color:#10b981">60</span>² + <span style="color:#4F46E5">b²</span> = <span style="color:#ef4444">100</span>² &rarr; 
+                Half-Chord (<span style="color:#4F46E5">b</span>) = <b id="math-b" style="color:#4F46E5">80</b><br>
+                Full Chord Length = <b id="math-full">160</b>
+            </p>
+        </div>
+    </section>
+
+    <!-- SECTION 10.4 -->
+    <section id="sec10-4">
+        <h2>10.4 - Inscribed Angles</h2>
+        <p>An <b>Inscribed Angle</b> has its vertex pushed all the way back ON the crust (edge of the circle), not in the center.</p>
+
+        <div class="dummy-translation">
+            🧠 <b>Dummy Translation:</b> Because the angle is pushed so far back, it is WEAK. It is exactly <b>HALF</b> the size of the crust (arc) it traps.
+        </div>
+
+        <div class="interactive-box">
+            <h3>Visualizer: The "Half-Size" Rule</h3>
+            <canvas id="canvas-10-4" width="400" height="250"></canvas>
+            <div class="slider-container">
+                <label>Change Arc Size:</label>
+                <input type="range" id="inscribed-slider" min="20" max="160" value="100">
+            </div>
+            <p>If Arc is <b id="inscr-arc-val" style="color:#ec4899">100&deg;</b>, then Inscribed Angle is <b id="inscr-ang-val" style="color:#4F46E5">50&deg;</b></p>
+        </div>
+    </section>
+
+    <!-- SECTION 10.5 -->
+    <section id="sec10-5">
+        <h2>10.5 - Tangents</h2>
+        <p>A <b>Tangent</b> is a line that brushes past the circle, touching it at exactly ONE single point.</p>
+        
+        <div class="dummy-translation">
+            🧠 <b>The 2 Golden Rules of Tangents:</b><br>
+            1. Radius + Tangent line = ALWAYS a perfect 90&deg; right angle. (Yes, more Pythagorean theorem!)<br>
+            2. <b>The Party Hat Rule:</b> If two tangent lines come from the exact same point outside the circle, they are equal in length.
+        </div>
+
+        <div class="interactive-box">
+            <h3>Visualizer: The Party Hat Rule</h3>
+            <canvas id="canvas-10-5" width="400" height="250"></canvas>
+            <div class="slider-container">
+                <label>Move Point Away/Closer:</label>
+                <input type="range" id="tangent-slider" min="150" max="350" value="250">
+            </div>
+            <p>Top Tangent = <b id="tan-val1" style="color:#4F46E5">100</b> | Bottom Tangent = <b id="tan-val2" style="color:#4F46E5">100</b></p>
+        </div>
+    </section>
+
+    <!-- SECTION 10.6 -->
+    <section id="sec10-6">
+        <h2>10.6 - Angles with Secants & Tangents</h2>
+        <p>To find angle measures of crossing lines, you just have to look at <b>WHERE</b> the angle's corner (vertex) is.</p>
+
+        <div class="interactive-box">
+            <h3>Visualizer: The "Where is the Angle?" Game</h3>
+            <div class="btn-group" id="btn-group-10-6">
+                <button class="active" onclick="setAngleMode('inside')">Vertex INSIDE</button>
+                <button onclick="setAngleMode('on')">Vertex ON edge</button>
+                <button onclick="setAngleMode('outside')">Vertex OUTSIDE</button>
+            </div>
+            <canvas id="canvas-10-6" width="400" height="250"></canvas>
+            <div class="formula-box" id="angle-formula-text" style="margin-top: 10px; font-size:1.1rem; text-align:left;">
+                <!-- Filled via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 10.7 -->
+    <section id="sec10-7">
+        <h2>10.7 - Segment Length Math</h2>
+        <p>Now we are doing math with the actual lengths of the sticks (segments) crossing the circle, not angles!</p>
+
+        <div class="process-box">
+            <h3>🛠️ How to set up the math:</h3>
+            <p><b>If crossing INSIDE (The X):</b> <br> Multiply the two pieces of the same stick. <br><span class="math-highlight">Piece 1 × Piece 2 = Piece 3 × Piece 4</span></p>
+            <p><b>If crossing OUTSIDE (The V):</b> <br> Multiply the outside piece by the ENTIRE stick. <br><span class="math-highlight">Outside × WHOLE = Outside × WHOLE</span></p>
+            <p style="color:#ef4444; font-weight:bold;">⚠️ "WHOLE" means you must ADD the outside + inside parts together!</p>
+        </div>
+
+        <div class="interactive-box">
+            <h3>Visualizer: Segment Length Formulas</h3>
+            <div class="btn-group" id="btn-group-10-7">
+                <button class="active" onclick="setSegMode('inside')">Crossing Inside</button>
+                <button onclick="setSegMode('outside')">Crossing Outside</button>
+            </div>
+            <canvas id="canvas-10-7" width="400" height="250"></canvas>
+            <div class="formula-box" id="seg-formula-text" style="margin-top: 10px; font-size:1.1rem; text-align:center;">
+                <!-- Filled via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 10.8 -->
+    <section id="sec10-8">
+        <h2>10.8 - Equations of Circles</h2>
+        <p>Circles on a coordinate graph have their own special equation based on the Pythagorean theorem.</p>
+
+        <div class="formula-box" style="text-align: center; font-size: 1.5rem;">
+            (x - <span style="color:#ec4899">h</span>)² + (y - <span style="color:#ec4899">k</span>)² = <span style="color:#4F46E5">r</span>²
+        </div>
+
+        <div class="dummy-translation">
+            🧠 <b>Dummy Translation:</b> <br>
+            1. Center = <b>(h, k)</b>. THE SIGNS FLIP! If the formula says (x - 3)², the center x is POSITIVE 3. <br>
+            2. Radius = <b>r</b>. The number at the end is the radius SQUARED. You must take the <b>square root</b> to find the actual radius length.
+        </div>
+
+        <div class="interactive-box">
+            <h3>Visualizer: Circle Grapher</h3>
+            <canvas id="canvas-10-8" width="400" height="300"></canvas>
+            <div class="slider-container">
+                <div><label>Center X (h):</label><br><input type="range" id="h-slider" min="-5" max="5" value="2"><br><span id="h-val">2</span></div>
+                <div><label>Center Y (k):</label><br><input type="range" id="k-slider" min="-5" max="5" value="-1"><br><span id="k-val">-1</span></div>
+                <div><label>Radius (r):</label><br><input type="range" id="r-slider" min="1" max="6" value="3"><br><span id="r-val">3</span></div>
+            </div>
+            <h3 id="eq-display" style="color:var(--dark); margin-top:20px; font-family:monospace; background:#e2e8f0; padding:10px; border-radius:8px;">
+                (x - 2)² + (y + 1)² = 9
+            </h3>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    // Utility for drawing
+    function drawCircle(ctx, x, y, r, color="#e2e8f0", fill="transparent", width=2) {
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, 2 * Math.PI);
+        ctx.strokeStyle = color;
+        ctx.fillStyle = fill;
+        ctx.lineWidth = width;
+        ctx.stroke();
+        if(fill !== "transparent") ctx.fill();
+    }
+    function drawDot(ctx, x, y, color="#1F2937") {
+        ctx.beginPath(); ctx.arc(x, y, 4, 0, 2 * Math.PI); ctx.fillStyle = color; ctx.fill();
+    }
+    function drawLine(ctx, x1, y1, x2, y2, color="#1F2937", width=2) {
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+        ctx.strokeStyle = color; ctx.lineWidth = width; ctx.stroke();
+    }
+
+    // --- 10.1: Radius & Circumference ---
+    const canvas1 = document.getElementById('canvas-10-1');
+    const ctx1 = canvas1.getContext('2d');
+    const radiusSlider = document.getElementById('radius-slider');
+    function draw10_1() {
+        ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
+        let r = parseInt(radiusSlider.value);
+        let cx = canvas1.width / 2, cy = canvas1.height / 2;
+        
+        document.getElementById('radius-val').innerText = r;
+        document.getElementById('dia-val').innerText = r * 2;
+        document.getElementById('circ-val').innerText = (2 * Math.PI * r).toFixed(2);
+
+        drawCircle(ctx1, cx, cy, r, "#4F46E5", "rgba(79, 70, 229, 0.1)", 4);
+        drawLine(ctx1, cx - r, cy, cx + r, cy, "#cbd5e1", 2); // diameter faint
+        drawLine(ctx1, cx, cy, cx + r, cy, "#ec4899", 4); // radius
+        drawDot(ctx1, cx, cy, "#1F2937");
+    }
+    radiusSlider.addEventListener('input', draw10_1); draw10_1();
+
+    // --- 10.2: Central Angles & Arcs ---
+    const canvas2 = document.getElementById('canvas-10-2');
+    const ctx2 = canvas2.getContext('2d');
+    const angleSlider = document.getElementById('angle-slider');
+    function draw10_2() {
+        ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+        let deg = parseInt(angleSlider.value);
+        let rad = deg * (Math.PI / 180);
+        let cx = canvas2.width / 2, cy = canvas2.height / 2, r = 80;
+
+        document.getElementById('angle-val').innerText = deg + "°";
+        document.getElementById('arc-val').innerText = deg + "°";
+
+        drawCircle(ctx2, cx, cy, r);
+        
+        // Slice
+        ctx2.beginPath();
+        ctx2.moveTo(cx, cy);
+        ctx2.arc(cx, cy, r, 0, -rad, true);
+        ctx2.lineTo(cx, cy);
+        ctx2.fillStyle = "rgba(79, 70, 229, 0.2)";
+        ctx2.fill();
+        ctx2.strokeStyle = "#4F46E5"; ctx2.stroke();
+        
+        // Highlight Arc
+        ctx2.beginPath();
+        ctx2.arc(cx, cy, r, 0, -rad, true);
+        ctx2.strokeStyle = "#ec4899"; ctx2.lineWidth = 6; ctx2.stroke();
+        
+        drawDot(ctx2, cx, cy);
+    }
+    angleSlider.addEventListener('input', draw10_2); draw10_2();
+
+    // --- 10.3: Chords & Right Triangles ---
+    const canvas3 = document.getElementById('canvas-10-3');
+    const ctx3 = canvas3.getContext('2d');
+    const chordSlider = document.getElementById('chord-dist-slider');
+    function draw10_3() {
+        ctx3.clearRect(0, 0, canvas3.width, canvas3.height);
+        let a = parseInt(chordSlider.value); // distance from center
+        let cx = canvas3.width / 2, cy = canvas3.height / 2, r = 100;
+        let b = Math.sqrt(r*r - a*a); // half chord (Pythagorean)
+        
+        document.getElementById('math-a').innerText = a;
+        document.getElementById('math-b').innerText = b.toFixed(1);
+        document.getElementById('math-full').innerText = (b*2).toFixed(1);
+
+        drawCircle(ctx3, cx, cy, r);
+        
+        // Draw Triangle
+        ctx3.beginPath(); ctx3.moveTo(cx, cy); ctx3.lineTo(cx, cy - a); ctx3.lineTo(cx + b, cy - a); ctx3.closePath();
+        ctx3.fillStyle = "rgba(16, 185, 129, 0.1)"; ctx3.fill();
+
+        // Lines
+        drawLine(ctx3, cx - b, cy - a, cx + b, cy - a, "#4F46E5", 4); // Full Chord (Blue)
+        drawLine(ctx3, cx, cy, cx, cy - a, "#10b981", 3); // Dist (a) (Green)
+        drawLine(ctx3, cx, cy, cx + b, cy - a, "#ef4444", 3); // Radius (c) (Red)
+
+        // 90 deg box
+        ctx3.strokeRect(cx, cy - a, 10, 10);
+        drawDot(ctx3, cx, cy);
+    }
+    chordSlider.addEventListener('input', draw10_3); draw10_3();
+
+    // --- 10.4: Inscribed Angles ---
+    const canvas4 = document.getElementById('canvas-10-4');
+    const ctx4 = canvas4.getContext('2d');
+    const inscrSlider = document.getElementById('inscribed-slider');
+    function draw10_4() {
+        ctx4.clearRect(0, 0, canvas4.width, canvas4.height);
+        let arcDeg = parseInt(inscrSlider.value);
+        let arcRad = arcDeg * (Math.PI / 180);
+        let cx = canvas4.width / 2, cy = 130, r = 90;
+
+        document.getElementById('inscr-arc-val').innerText = arcDeg + "°";
+        document.getElementById('inscr-ang-val').innerText = (arcDeg / 2) + "°";
+
+        drawCircle(ctx4, cx, cy, r);
+
+        // Calculate bottom points based on angle symmetrically from bottom
+        let startAngle = (Math.PI/2) - (arcRad/2);
+        let endAngle = (Math.PI/2) + (arcRad/2);
+        
+        let p1x = cx + r * Math.cos(startAngle), p1y = cy + r * Math.sin(startAngle);
+        let p2x = cx + r * Math.cos(endAngle), p2y = cy + r * Math.sin(endAngle);
+        let topX = cx, topY = cy - r; // Vertex ON circle
+
+        // Inscribed Angle
+        ctx4.beginPath(); ctx4.moveTo(p1x, p1y); ctx4.lineTo(topX, topY); ctx4.lineTo(p2x, p2y);
+        ctx4.strokeStyle = "#4F46E5"; ctx4.lineWidth = 3; ctx4.stroke();
+        
+        // Highlight Arc
+        ctx4.beginPath(); ctx4.arc(cx, cy, r, startAngle, endAngle);
+        ctx4.strokeStyle = "#ec4899"; ctx4.lineWidth = 6; ctx4.stroke();
+
+        drawDot(ctx4, cx, cy); drawDot(ctx4, topX, topY, "#4F46E5");
+    }
+    inscrSlider.addEventListener('input', draw10_4); draw10_4();
+
+    // --- 10.5: Tangents (Party Hat) ---
+    const canvas5 = document.getElementById('canvas-10-5');
+    const ctx5 = canvas5.getContext('2d');
+    const tanSlider = document.getElementById('tangent-slider');
+    function draw10_5() {
+        ctx5.clearRect(0, 0, canvas5.width, canvas5.height);
+        let px = parseInt(tanSlider.value);
+        let cx = 100, cy = 125, r = 70;
+        let d = px - cx; // dist from center to point
+        
+        // Math to find tangent touch points
+        let angle = Math.acos(r / d);
+        let t1x = cx + r * Math.cos(angle), t1y = cy - r * Math.sin(angle);
+        let t2x = cx + r * Math.cos(-angle), t2y = cy - r * Math.sin(-angle);
+        let tanLen = Math.sqrt(d*d - r*r).toFixed(1);
+
+        document.getElementById('tan-val1').innerText = tanLen;
+        document.getElementById('tan-val2').innerText = tanLen;
+
+        drawCircle(ctx5, cx, cy, r);
+        drawLine(ctx5, cx, cy, t1x, t1y, "#cbd5e1", 2); // Rad 1
+        drawLine(ctx5, cx, cy, t2x, t2y, "#cbd5e1", 2); // Rad 2
+        
+        drawLine(ctx5, px, cy, t1x, t1y, "#4F46E5", 4); // Tangent 1
+        drawLine(ctx5, px, cy, t2x, t2y, "#ec4899", 4); // Tangent 2
+
+        drawDot(ctx5, cx, cy); drawDot(ctx5, px, cy, "#1F2937");
+    }
+    tanSlider.addEventListener('input', draw10_5); draw10_5();
+
+    // --- 10.6: Angles Game ---
+    const canvas6 = document.getElementById('canvas-10-6');
+    const ctx6 = canvas6.getContext('2d');
+    let angleMode = 'inside';
+    function setAngleMode(mode) {
+        angleMode = mode;
+        document.querySelectorAll('#btn-group-10-6 button').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        draw10_6();
+    }
+    function draw10_6() {
+        ctx6.clearRect(0, 0, canvas6.width, canvas6.height);
+        let cx = 200, cy = 125, r = 90;
+        drawCircle(ctx6, cx, cy, r);
+        drawDot(ctx6, cx, cy, "#9ca3af");
+
+        let textDiv = document.getElementById('angle-formula-text');
+
+        if(angleMode === 'inside') {
+            drawLine(ctx6, cx-70, cy-50, cx+70, cy+50, "#1F2937");
+            drawLine(ctx6, cx-60, cy+60, cx+80, cy-40, "#1F2937");
+            // Highlights
+            ctx6.beginPath(); ctx6.arc(cx, cy, r, -0.46, 0.62); ctx6.strokeStyle="#ec4899"; ctx6.lineWidth=5; ctx6.stroke();
+            ctx6.beginPath(); ctx6.arc(cx, cy, r, 2.38, 3.76); ctx6.strokeStyle="#4F46E5"; ctx6.lineWidth=5; ctx6.stroke();
+            drawDot(ctx6, cx+8, cy+4, "#10B981"); // vertex inside
+            textDiv.innerHTML = "<b>INSIDE RULE: Average the arcs.</b><br>Angle = (<span style='color:#ec4899'>Arc 1</span> + <span style='color:#4F46E5'>Arc 2</span>) ÷ 2";
+        } 
+        else if(angleMode === 'on') {
+            drawLine(ctx6, cx-90, cy, cx+70, cy-50, "#1F2937");
+            drawLine(ctx6, cx-90, cy, cx+50, cy+70, "#1F2937");
+            ctx6.beginPath(); ctx6.arc(cx, cy, r, -0.6, 0.95); ctx6.strokeStyle="#ec4899"; ctx6.lineWidth=5; ctx6.stroke();
+            drawDot(ctx6, cx-90, cy, "#10B981"); // vertex on
+            textDiv.innerHTML = "<b>ON EDGE RULE: Cut it in half.</b><br>Angle = <span style='color:#ec4899'>Intercepted Arc</span> ÷ 2";
+        }
+        else if(angleMode === 'outside') {
+            drawLine(ctx6, 350, 125, cx-40, cy-80, "#1F2937");
+            drawLine(ctx6, 350, 125, cx-40, cy+80, "#1F2937");
+            ctx6.beginPath(); ctx6.arc(cx, cy, r, -0.4, 0.4); ctx6.strokeStyle="#4F46E5"; ctx6.lineWidth=5; ctx6.stroke(); // small
+            ctx6.beginPath(); ctx6.arc(cx, cy, r, 2.0, 4.2); ctx6.strokeStyle="#ec4899"; ctx6.lineWidth=5; ctx6.stroke(); // big
+            drawDot(ctx6, 350, 125, "#10B981"); // vertex outside
+            textDiv.innerHTML = "<b>OUTSIDE RULE: Subtract, then half.</b><br>Angle = (<span style='color:#ec4899'>BIG Arc</span> - <span style='color:#4F46E5'>Small Arc</span>) ÷ 2";
+        }
+    }
+    draw10_6(); // init
+
+    // --- 10.7: Segments Game ---
+    const canvas7 = document.getElementById('canvas-10-7');
+    const ctx7 = canvas7.getContext('2d');
+    let segMode = 'inside';
+    function setSegMode(mode) {
+        segMode = mode;
+        document.querySelectorAll('#btn-group-10-7 button').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        draw10_7();
+    }
+    function draw10_7() {
+        ctx7.clearRect(0, 0, canvas7.width, canvas7.height);
+        let cx = 150, cy = 125, r = 90;
+        drawCircle(ctx7, cx, cy, r);
+        let textDiv = document.getElementById('seg-formula-text');
+
+        ctx7.lineWidth = 4;
+        if(segMode === 'inside') {
+            // Line 1
+            drawLine(ctx7, cx-70, cy-50, cx, cy, "#4F46E5", 4); // part a
+            drawLine(ctx7, cx, cy, cx+70, cy+50, "#818CF8", 4); // part b
+            // Line 2
+            drawLine(ctx7, cx-60, cy+60, cx, cy, "#ec4899", 4); // part c
+            drawLine(ctx7, cx, cy, cx+80, cy-40, "#F472B6", 4); // part d
+            drawDot(ctx7, cx, cy, "#1F2937");
+            textDiv.innerHTML = "<span style='color:#4F46E5'>BluePart</span> × <span style='color:#818CF8'>LightBluePart</span> = <span style='color:#ec4899'>PinkPart</span> × <span style='color:#F472B6'>LightPinkPart</span>";
+        } 
+        else if(segMode === 'outside') {
+            // Line 1 (Top)
+            drawLine(ctx7, 340, 125, cx+60, cy-65, "#4F46E5", 4); // outside
+            drawLine(ctx7, cx+60, cy-65, cx-70, cy-55, "#818CF8", 4); // inside
+            // Line 2 (Bottom)
+            drawLine(ctx7, 340, 125, cx+50, cy+75, "#ec4899", 4); // outside
+            drawLine(ctx7, cx+50, cy+75, cx-50, cy+80, "#F472B6", 4); // inside
+            drawDot(ctx7, 340, 125, "#1F2937");
+            textDiv.innerHTML = "<span style='color:#4F46E5'>OutBlue</span> × (<b>WHOLE BLUE LINE</b>) = <span style='color:#ec4899'>OutPink</span> × (<b>WHOLE PINK LINE</b>)";
+        }
+    }
+    draw10_7();
+
+    // --- 10.8: Circle Grapher ---
+    const canvas8 = document.getElementById('canvas-10-8');
+    const ctx8 = canvas8.getContext('2d');
+    const hSlider = document.getElementById('h-slider');
+    const kSlider = document.getElementById('k-slider');
+    const rSlider = document.getElementById('r-slider');
+
+    function draw10_8() {
+        ctx8.clearRect(0, 0, canvas8.width, canvas8.height);
+        let h = parseInt(hSlider.value);
+        let k = parseInt(kSlider.value);
+        let r = parseInt(rSlider.value);
+        
+        document.getElementById('h-val').innerText = h;
+        document.getElementById('k-val').innerText = k;
+        document.getElementById('r-val').innerText = r;
+
+        // Equation text logic (flipping signs)
+        let hStr = h > 0 ? `- ${h}` : h < 0 ? `+ ${Math.abs(h)}` : ``;
+        let kStr = k > 0 ? `- ${k}` : k < 0 ? `+ ${Math.abs(k)}` : ``;
+        let eqX = h === 0 ? `x²` : `(x ${hStr})²`;
+        let eqY = k === 0 ? `y²` : `(y ${kStr})²`;
+        document.getElementById('eq-display').innerHTML = `${eqX} + ${eqY} = <span style="color:#4F46E5">${r*r}</span>`;
+
+        let gridScale = 25; 
+        let originX = canvas8.width / 2;
+        let originY = canvas8.height / 2;
+
+        // Grid
+        ctx8.strokeStyle = "#f1f5f9"; ctx8.lineWidth = 1;
+        for(let i=0; i<canvas8.width; i+=gridScale) {
+            drawLine(ctx8, i, 0, i, canvas8.height, "#f1f5f9", 1);
+            drawLine(ctx8, 0, i, canvas8.width, i, "#f1f5f9", 1);
+        }
+        // Axes
+        drawLine(ctx8, originX, 0, originX, canvas8.height, "#94a3b8", 2);
+        drawLine(ctx8, 0, originY, canvas8.width, originY, "#94a3b8", 2);
+
+        // Draw Circle
+        let pixelH = originX + (h * gridScale);
+        let pixelK = originY - (k * gridScale); // canvas y is inverted
+        let pixelR = r * gridScale;
+
+        drawCircle(ctx8, pixelH, pixelK, pixelR, "#4F46E5", "rgba(79, 70, 229, 0.2)", 3);
+        drawDot(ctx8, pixelH, pixelK, "#ec4899");
+    }
+    hSlider.addEventListener('input', draw10_8);
+    kSlider.addEventListener('input', draw10_8);
+    rSlider.addEventListener('input', draw10_8);
+    draw10_8();
+
+</script>
+</body>
+</html>
