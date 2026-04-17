@@ -25,7 +25,7 @@ RUN cargo build --release
 # Stage 3: Final Runtime
 FROM debian:bookworm-slim
 WORKDIR /app
-RUN apt-get update && apt-get install -y libssl3 ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libssl3 ca-certificates libgcc-s1 libc6 && rm -rf /var/lib/apt/lists/*
 
 # Copy binary and migrations
 COPY --from=backend-builder /app/target/release/censtudy-backend /app/censtudy-backend
@@ -44,4 +44,4 @@ ENV DATABASE_URL=sqlite:///app/data/censtudy.db?mode=rwc
 # Create data directory for SQLite persistence
 RUN mkdir -p /app/data
 
-CMD ["/app/censtudy-backend"]
+CMD ["sh", "-c", "echo 'Running diagnostics...' && ls -l /app/censtudy-backend && ldd /app/censtudy-backend && echo 'Starting application...' && /app/censtudy-backend"]
