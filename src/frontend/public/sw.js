@@ -29,6 +29,16 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return
 
   event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request)),
+    fetch(event.request).catch(async () => {
+      const cachedResponse = await caches.match(event.request)
+      if (cachedResponse) return cachedResponse
+      
+      // Fallback: If it's a navigation request, return index.html
+      if (event.request.mode === 'navigate') {
+        return caches.match('/index.html')
+      }
+      
+      return new Response('Not found', { status: 404 })
+    })
   )
 })
