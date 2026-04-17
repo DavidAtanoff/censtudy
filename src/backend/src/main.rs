@@ -23,18 +23,40 @@ use uuid::Uuid;
 
 #[tokio::main]
 async fn main() {
+    // Set panic hook to ensure panic messages are captured in logs
+    std::panic::set_hook(Box::new(|panic_info| {
+        let message = if let Some(s) = panic_info.payload().downcast_ref::<&str>() {
+            s.to_string()
+        } else if let Some(s) = panic_info.payload().downcast_ref::<String>() {
+            s.clone()
+        } else {
+            "Unknown panic".to_string()
+        };
+        let location = panic_info.location().map(|l| format!(" at {}:{}", l.file(), l.line())).unwrap_or_default();
+        eprintln!("CRITICAL PANIC: {}{}", message, location);
+    }));
+
     tracing_subscriber::fmt::init();
     dotenv::dotenv().ok();
 
+    tracing::info!("Starting StudyFlow backend...");
+
     // Initialize database
     let database_url = std::env::var("DATABASE_URL")
-        .unwrap_or_else(|_| "sqlite:cenlearn.db?mode=rwc".to_string());
+        .unwrap_or_else(|_| "sqlite:cenlearn.db?mode=rwc".to_string())
+        .trim()
+        .to_string();
     
     tracing::info!("Connecting to database: {}", database_url);
     
-    let pool = SqlitePool::connect(&database_url)
-        .await
-        .expect(&format!("CRITICAL: Failed to connect to database at {}. Check if the folder exists and is writable.", database_url));
+    let pool = match SqlitePool::connect(&database_url).await {
+        Ok(pool) => pool,
+        Err(e) => {
+            let msg = format!("CRITICAL: Failed to connect to database at {}: {}. Check if the folder exists and is writable.", database_url, e);
+            eprintln!("{}", msg);
+            panic!("{}", msg);
+        }
+    };
     
     // Run migrations
     tracing::info!("Running database migrations...");
@@ -173,9 +195,14 @@ async fn main() {
     
     tracing::info!("Attempting to bind server to {}", addr);
     
-    let listener = tokio::net::TcpListener::bind(&addr)
-        .await
-        .expect(&format!("CRITICAL: Failed to bind to address {}. Check if the PORT env var is correct.", addr));
+    let listener = match tokio::net::TcpListener::bind(&addr).await {
+        Ok(listener) => listener,
+        Err(e) => {
+            let msg = format!("CRITICAL: Failed to bind to address {}: {}. Check if the PORT env var ({}) is correct.", addr, e, port);
+            eprintln!("{}", msg);
+            panic!("{}", msg);
+        }
+    };
     
     tracing::info!("Server listener started. Handing off to Axum...");
     

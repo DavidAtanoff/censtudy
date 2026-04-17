@@ -29,6 +29,7 @@ RUN apt-get update && apt-get install -y libssl3 ca-certificates && rm -rf /var/
 
 # Copy binary and migrations
 COPY --from=backend-builder /app/target/release/cenlearn-backend /app/cenlearn-backend
+RUN chmod +x /app/cenlearn-backend
 COPY --from=backend-builder /app/migrations /app/migrations
 COPY --from=backend-builder /app/demo_content.sql /app/demo_content.sql
 
@@ -38,7 +39,7 @@ COPY --from=frontend-builder /app/frontend/dist /app/dist
 EXPOSE 3000
 
 ENV PORT=3000
-ENV DATABASE_URL=sqlite:/app/data/cenlearn.db?mode=rwc
+ENV DATABASE_URL=sqlite:///app/data/cenlearn.db?mode=rwc
 
 # Create data directory for SQLite persistence
 RUN mkdir -p /app/data
