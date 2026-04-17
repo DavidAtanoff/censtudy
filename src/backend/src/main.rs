@@ -30,15 +30,20 @@ async fn main() {
     let database_url = std::env::var("DATABASE_URL")
         .unwrap_or_else(|_| "sqlite:cenlearn.db?mode=rwc".to_string());
     
+    tracing::info!("Connecting to database: {}", database_url);
+    
     let pool = SqlitePool::connect(&database_url)
         .await
-        .expect("Failed to connect to database");
+        .expect(&format!("CRITICAL: Failed to connect to database at {}. Check if the folder exists and is writable.", database_url));
     
     // Run migrations
+    tracing::info!("Running database migrations...");
     sqlx::migrate!("./migrations")
         .run(&pool)
         .await
-        .expect("Failed to run migrations");
+        .expect("CRITICAL: Failed to run database migrations. Ensure the migrations folder is present in the image.");
+    
+    tracing::info!("Database initialized successfully.");
 
     let frontend_origin = std::env::var("FRONTEND_ORIGIN")
         .unwrap_or_else(|_| "http://localhost:5173".to_string());
@@ -61,14 +66,20 @@ async fn main() {
         std::env::var("AZURE_TENANT_ID").ok(),
         std::env::var("AZURE_REDIRECT_URI").ok(),
     ) {
-        (Some(client_id), Some(client_secret), Some(tenant_id), Some(redirect_uri)) => Some(AzureOAuthConfig {
-            client_id,
-            client_secret,
-            tenant_id,
-            redirect_uri,
-            allowed_email_domain: std::env::var("AZURE_ALLOWED_EMAIL_DOMAIN").ok(),
-        }),
-        _ => None,
+        (Some(client_id), Some(client_secret), Some(tenant_id), Some(redirect_uri)) => {
+            tracing::info!("Azure OAuth configured successfully.");
+            Some(AzureOAuthConfig {
+                client_id,
+                client_secret,
+                tenant_id,
+                redirect_uri,
+                allowed_email_domain: std::env::var("AZURE_ALLOWED_EMAIL_DOMAIN").ok(),
+            })
+        },
+        _ => {
+            tracing::warn!("Azure OAuth NOT configured. Check your AZURE_* variables in Render.");
+            None
+        }
     };
 
     let app_state = Arc::new(AppState {
@@ -159,13 +170,19 @@ async fn main() {
         .unwrap_or(3000);
 
     let addr = format!("0.0.0.0:{}", port);
+    
+    tracing::info!("Attempting to bind server to {}", addr);
+    
     let listener = tokio::net::TcpListener::bind(&addr)
         .await
-        .unwrap();
+        .expect(&format!("CRITICAL: Failed to bind to address {}. Check if the PORT env var is correct.", addr));
     
-    tracing::info!("Server running on http://{}", addr);
+    tracing::info!("Server listener started. Handing off to Axum...");
     
-    axum::serve(listener, app).await.unwrap();
+    if let Err(e) = axum::serve(listener, app).await {
+        tracing::error!("CRITICAL: Server error during execution: {:?}", e);
+        panic!("Server error: {:?}", e);
+    }
 }
 
 #[derive(Clone)]
