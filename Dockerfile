@@ -12,7 +12,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
 
 # Cache dependencies
-COPY src/backend/Cargo.toml src/backend/Cargo.lock ./
+COPY src/backend/Cargo.toml src/backend/Cargo.lock* ./
 RUN mkdir src && echo "fn main() {}" > src/main.rs && cargo build --release && rm -rf src
 
 # Copy backend source and frontend build
