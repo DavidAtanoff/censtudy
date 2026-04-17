@@ -7,7 +7,7 @@ COPY src/frontend/ ./
 RUN npm run build
 
 # Stage 2: Build the Backend
-FROM rust:1.80-slim-bullseye AS backend-builder
+FROM rust:1.85-slim-bookworm AS backend-builder
 WORKDIR /app
 RUN apt-get update && apt-get install -y pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
 
@@ -23,9 +23,9 @@ COPY --from=frontend-builder /app/frontend/dist ./dist
 RUN cargo build --release
 
 # Stage 3: Final Runtime
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 WORKDIR /app
-RUN apt-get update && apt-get install -y libssl1.1 ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libssl3 ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # Copy binary and migrations
 COPY --from=backend-builder /app/target/release/cenlearn-backend /app/cenlearn-backend
