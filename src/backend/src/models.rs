@@ -147,6 +147,8 @@ pub struct File {
 pub struct AuditLog {
     pub id: i64,
     pub user_id: i64,
+    pub user_display_name: Option<String>,
+    pub user_email: Option<String>,
     pub action: String,
     pub entity_type: String,
     pub entity_id: i64,

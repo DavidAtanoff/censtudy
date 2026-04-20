@@ -93,10 +93,10 @@ pub async fn upload_file(
 
 pub async fn get_file(
     State(state): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Extension(_user): Extension<User>,
     Path(id): Path<i64>,
 ) -> Result<Json<File>, StatusCode> {
-    crate::db::get_file_for_user(&state.pool, id, user.id)
+    crate::db::get_file_by_id(&state.pool, id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .map(Json)
@@ -105,10 +105,10 @@ pub async fn get_file(
 
 pub async fn download_file(
     State(state): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Extension(_user): Extension<User>,
     Path(id): Path<i64>,
 ) -> Result<Response, StatusCode> {
-    let file = crate::db::get_file_for_user(&state.pool, id, user.id)
+    let file = crate::db::get_file_by_id(&state.pool, id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .ok_or(StatusCode::NOT_FOUND)?;
@@ -136,9 +136,9 @@ pub async fn download_file(
 
 pub async fn list_files(
     State(state): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Extension(_user): Extension<User>,
 ) -> Result<Json<Vec<File>>, StatusCode> {
-    crate::db::list_files_for_user(&state.pool, user.id)
+    crate::db::list_all_files(&state.pool)
         .await
         .map(Json)
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
@@ -149,7 +149,7 @@ pub async fn delete_file(
     Extension(user): Extension<User>,
     Path(id): Path<i64>,
 ) -> Result<StatusCode, StatusCode> {
-    let file = crate::db::get_file_for_user(&state.pool, id, user.id)
+    let file = crate::db::get_file_by_id(&state.pool, id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .ok_or(StatusCode::NOT_FOUND)?;
@@ -163,6 +163,16 @@ pub async fn delete_file(
         .execute(&state.pool)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    
+    // Log audit
+    let _ = crate::handlers::audit::log_action(
+        &state.pool,
+        user.id,
+        "delete",
+        "file",
+        id,
+        Some(&format!("Deleted file: {}", file.original_filename)),
+    ).await;
     
     Ok(StatusCode::NO_CONTENT)
 }

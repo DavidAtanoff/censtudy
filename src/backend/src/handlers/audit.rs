@@ -33,9 +33,9 @@ pub async fn log_action(
 
 pub async fn get_audit_logs(
     State(state): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Extension(_user): Extension<User>,
 ) -> Result<Json<Vec<AuditLog>>, StatusCode> {
-    db::list_audit_logs_for_user(&state.pool, user.id)
+    db::list_all_audit_logs(&state.pool)
         .await
         .map(Json)
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
@@ -43,10 +43,10 @@ pub async fn get_audit_logs(
 
 pub async fn get_entity_audit_logs(
     State(state): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Extension(_user): Extension<User>,
     Path((entity_type, entity_id)): Path<(String, i64)>,
 ) -> Result<Json<Vec<AuditLog>>, StatusCode> {
-    db::list_entity_audit_logs_for_user(&state.pool, user.id, &entity_type, entity_id)
+    db::list_entity_audit_logs(&state.pool, &entity_type, entity_id)
         .await
         .map(Json)
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
@@ -54,15 +54,16 @@ pub async fn get_entity_audit_logs(
 
 pub async fn get_user_audit_logs(
     State(state): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Extension(_user): Extension<User>,
     Path(user_id): Path<i64>,
 ) -> Result<Json<Vec<AuditLog>>, StatusCode> {
-    if user.id != user_id {
-        return Err(StatusCode::FORBIDDEN);
-    }
-
-    db::list_audit_logs_for_user(&state.pool, user_id)
+    db::list_all_audit_logs(&state.pool)
         .await
+        .map(|logs| {
+            logs.into_iter()
+                .filter(|l| l.user_id == user_id)
+                .collect::<Vec<_>>()
+        })
         .map(Json)
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
 }

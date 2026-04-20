@@ -12,7 +12,7 @@ pub async fn submit_quiz(
     Path(quiz_id): Path<i64>,
     Json(submission): Json<QuizSubmission>,
 ) -> Result<Json<QuizAttempt>, StatusCode> {
-    let content = db::get_content_for_user(&state.pool, quiz_id, user.id)
+    let content = db::get_content_by_id(&state.pool, quiz_id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .ok_or(StatusCode::NOT_FOUND)?;
@@ -43,7 +43,7 @@ pub async fn get_attempts(
     Extension(user): Extension<User>,
     Path(quiz_id): Path<i64>,
 ) -> Result<Json<Vec<QuizAttempt>>, StatusCode> {
-    let content = db::get_content_for_user(&state.pool, quiz_id, user.id)
+    let content = db::get_content_by_id(&state.pool, quiz_id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .ok_or(StatusCode::NOT_FOUND)?;

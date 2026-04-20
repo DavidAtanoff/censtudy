@@ -19,19 +19,21 @@ pub async fn grade_answer(
 
 pub async fn chat_with_tutor(
     State(state): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Extension(_user): Extension<User>,
     axum::extract::Path(unit_id): axum::extract::Path<i64>,
     Json(request): Json<crate::models::ChatRequest>,
 ) -> Result<Json<crate::models::ChatResponse>, StatusCode> {
-    if !crate::db::user_owns_unit(&state.pool, unit_id, user.id)
+    // Check unit existence only
+    if crate::db::get_unit_by_id(&state.pool, unit_id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
+        .is_none()
     {
         return Err(StatusCode::NOT_FOUND);
     }
 
     // Fetch study guide
-    let study_guide = match crate::db::list_content_for_user(&state.pool, unit_id, user.id).await {
+    let study_guide = match crate::db::list_all_content(&state.pool, unit_id).await {
         Ok(contents) => {
             contents.into_iter()
                 .find(|c| c.content_type == "study-guide")

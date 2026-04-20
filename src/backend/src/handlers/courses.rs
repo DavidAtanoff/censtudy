@@ -8,9 +8,9 @@ use crate::{db, models::{Course, CreateCourse, User}, AppState, handlers};
 
 pub async fn list_courses(
     State(state): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Extension(_user): Extension<User>,
 ) -> Result<Json<Vec<Course>>, StatusCode> {
-    db::list_courses_for_user(&state.pool, user.id)
+    db::list_all_courses(&state.pool)
         .await
         .map(Json)
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
@@ -40,10 +40,10 @@ pub async fn create_course(
 
 pub async fn get_course(
     State(state): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Extension(_user): Extension<User>,
     Path(id): Path<i64>,
 ) -> Result<Json<Course>, StatusCode> {
-    db::get_course_for_user(&state.pool, id, user.id)
+    db::get_course_by_id(&state.pool, id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .map(Json)
@@ -56,7 +56,8 @@ pub async fn update_course(
     Path(id): Path<i64>,
     Json(course): Json<CreateCourse>,
 ) -> Result<Json<Course>, StatusCode> {
-    if db::get_course_for_user(&state.pool, id, user.id)
+    // Check existence only
+    if db::get_course_by_id(&state.pool, id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .is_none()
@@ -86,7 +87,8 @@ pub async fn delete_course(
     Extension(user): Extension<User>,
     Path(id): Path<i64>,
 ) -> Result<StatusCode, StatusCode> {
-    if db::get_course_for_user(&state.pool, id, user.id)
+    // Check existence only
+    if db::get_course_by_id(&state.pool, id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .is_none()

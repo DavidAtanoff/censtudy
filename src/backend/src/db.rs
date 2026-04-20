@@ -354,191 +354,126 @@ pub async fn delete_resource(pool: &SqlitePool, id: i64) -> Result<(), sqlx::Err
     Ok(())
 }
 
-pub async fn list_courses_for_user(pool: &SqlitePool, user_id: i64) -> Result<Vec<Course>, sqlx::Error> {
+pub async fn list_all_courses(pool: &SqlitePool) -> Result<Vec<Course>, sqlx::Error> {
     sqlx::query_as::<_, Course>(
-        "SELECT * FROM courses WHERE created_by = ? ORDER BY created_at DESC"
+        "SELECT * FROM courses ORDER BY created_at DESC"
     )
-    .bind(user_id)
     .fetch_all(pool)
     .await
 }
 
-pub async fn get_course_for_user(pool: &SqlitePool, id: i64, user_id: i64) -> Result<Option<Course>, sqlx::Error> {
+pub async fn get_course_by_id(pool: &SqlitePool, id: i64) -> Result<Option<Course>, sqlx::Error> {
     sqlx::query_as::<_, Course>(
-        "SELECT * FROM courses WHERE id = ? AND created_by = ?"
+        "SELECT * FROM courses WHERE id = ?"
     )
     .bind(id)
-    .bind(user_id)
     .fetch_optional(pool)
     .await
 }
 
-pub async fn user_owns_course(pool: &SqlitePool, course_id: i64, user_id: i64) -> Result<bool, sqlx::Error> {
-    let exists: i64 = sqlx::query_scalar(
-        "SELECT EXISTS(SELECT 1 FROM courses WHERE id = ? AND created_by = ?)"
-    )
-    .bind(course_id)
-    .bind(user_id)
-    .fetch_one(pool)
-    .await?;
-
-    Ok(exists == 1)
-}
-
-pub async fn list_units_for_user(
+pub async fn list_all_units(
     pool: &SqlitePool,
     course_id: i64,
-    user_id: i64,
 ) -> Result<Vec<Unit>, sqlx::Error> {
     sqlx::query_as::<_, Unit>(
-        "SELECT u.*
-         FROM units u
-         JOIN courses c ON c.id = u.course_id
-         WHERE u.course_id = ? AND c.created_by = ?
-         ORDER BY u.order_index"
+        "SELECT * FROM units WHERE course_id = ? ORDER BY order_index"
     )
     .bind(course_id)
-    .bind(user_id)
     .fetch_all(pool)
     .await
 }
 
-pub async fn get_unit_for_user(pool: &SqlitePool, id: i64, user_id: i64) -> Result<Option<Unit>, sqlx::Error> {
+pub async fn get_unit_by_id(pool: &SqlitePool, id: i64) -> Result<Option<Unit>, sqlx::Error> {
     sqlx::query_as::<_, Unit>(
-        "SELECT u.*
-         FROM units u
-         JOIN courses c ON c.id = u.course_id
-         WHERE u.id = ? AND c.created_by = ?"
+        "SELECT * FROM units WHERE id = ?"
     )
     .bind(id)
-    .bind(user_id)
     .fetch_optional(pool)
     .await
 }
 
-pub async fn user_owns_unit(pool: &SqlitePool, unit_id: i64, user_id: i64) -> Result<bool, sqlx::Error> {
-    let exists: i64 = sqlx::query_scalar(
-        "SELECT EXISTS(
-            SELECT 1
-            FROM units u
-            JOIN courses c ON c.id = u.course_id
-            WHERE u.id = ? AND c.created_by = ?
-        )"
-    )
-    .bind(unit_id)
-    .bind(user_id)
-    .fetch_one(pool)
-    .await?;
-
-    Ok(exists == 1)
-}
-
-pub async fn list_content_for_user(
+pub async fn list_all_content(
     pool: &SqlitePool,
     unit_id: i64,
-    user_id: i64,
 ) -> Result<Vec<Content>, sqlx::Error> {
     sqlx::query_as::<_, Content>(
-        "SELECT co.*
-         FROM content co
-         JOIN units u ON u.id = co.unit_id
-         JOIN courses c ON c.id = u.course_id
-         WHERE co.unit_id = ? AND c.created_by = ?
-         ORDER BY co.created_at"
+        "SELECT * FROM content WHERE unit_id = ? ORDER BY created_at"
     )
     .bind(unit_id)
-    .bind(user_id)
     .fetch_all(pool)
     .await
 }
 
-pub async fn get_content_for_user(pool: &SqlitePool, id: i64, user_id: i64) -> Result<Option<Content>, sqlx::Error> {
+pub async fn get_content_by_id(pool: &SqlitePool, id: i64) -> Result<Option<Content>, sqlx::Error> {
     sqlx::query_as::<_, Content>(
-        "SELECT co.*
-         FROM content co
-         JOIN units u ON u.id = co.unit_id
-         JOIN courses c ON c.id = u.course_id
-         WHERE co.id = ? AND c.created_by = ?"
+        "SELECT * FROM content WHERE id = ?"
     )
     .bind(id)
-    .bind(user_id)
     .fetch_optional(pool)
     .await
 }
 
-pub async fn list_resources_for_user(
+pub async fn list_all_resources(
     pool: &SqlitePool,
     unit_id: i64,
-    user_id: i64,
 ) -> Result<Vec<Resource>, sqlx::Error> {
     sqlx::query_as::<_, Resource>(
-        "SELECT r.*
-         FROM unit_resources r
-         JOIN units u ON u.id = r.unit_id
-         JOIN courses c ON c.id = u.course_id
-         WHERE r.unit_id = ? AND c.created_by = ?
-         ORDER BY r.created_at"
+        "SELECT * FROM unit_resources WHERE unit_id = ? ORDER BY created_at"
     )
     .bind(unit_id)
-    .bind(user_id)
     .fetch_all(pool)
     .await
 }
 
-pub async fn get_resource_for_user(pool: &SqlitePool, id: i64, user_id: i64) -> Result<Option<Resource>, sqlx::Error> {
+pub async fn get_resource_by_id(pool: &SqlitePool, id: i64) -> Result<Option<Resource>, sqlx::Error> {
     sqlx::query_as::<_, Resource>(
-        "SELECT r.*
-         FROM unit_resources r
-         JOIN units u ON u.id = r.unit_id
-         JOIN courses c ON c.id = u.course_id
-         WHERE r.id = ? AND c.created_by = ?"
+        "SELECT * FROM unit_resources WHERE id = ?"
     )
     .bind(id)
-    .bind(user_id)
     .fetch_optional(pool)
     .await
 }
 
-pub async fn list_files_for_user(pool: &SqlitePool, user_id: i64) -> Result<Vec<File>, sqlx::Error> {
+pub async fn list_all_files(pool: &SqlitePool) -> Result<Vec<File>, sqlx::Error> {
     sqlx::query_as::<_, File>(
-        "SELECT * FROM files WHERE uploaded_by = ? ORDER BY created_at DESC"
+        "SELECT * FROM files ORDER BY created_at DESC"
     )
-    .bind(user_id)
     .fetch_all(pool)
     .await
 }
 
-pub async fn get_file_for_user(pool: &SqlitePool, id: i64, user_id: i64) -> Result<Option<File>, sqlx::Error> {
+pub async fn get_file_by_id(pool: &SqlitePool, id: i64) -> Result<Option<File>, sqlx::Error> {
     sqlx::query_as::<_, File>(
-        "SELECT * FROM files WHERE id = ? AND uploaded_by = ?"
+        "SELECT * FROM files WHERE id = ?"
     )
     .bind(id)
-    .bind(user_id)
     .fetch_optional(pool)
     .await
 }
 
-pub async fn list_audit_logs_for_user(pool: &SqlitePool, user_id: i64) -> Result<Vec<AuditLog>, sqlx::Error> {
+pub async fn list_all_audit_logs(pool: &SqlitePool) -> Result<Vec<AuditLog>, sqlx::Error> {
     sqlx::query_as::<_, AuditLog>(
-        "SELECT * FROM audit_logs WHERE user_id = ? ORDER BY created_at DESC LIMIT 100"
+        "SELECT a.*, u.display_name as user_display_name, u.email as user_email 
+         FROM audit_logs a
+         LEFT JOIN users u ON a.user_id = u.id
+         ORDER BY a.created_at DESC LIMIT 100"
     )
-    .bind(user_id)
     .fetch_all(pool)
     .await
 }
 
-pub async fn list_entity_audit_logs_for_user(
+pub async fn list_entity_audit_logs(
     pool: &SqlitePool,
-    user_id: i64,
     entity_type: &str,
     entity_id: i64,
 ) -> Result<Vec<AuditLog>, sqlx::Error> {
     sqlx::query_as::<_, AuditLog>(
-        "SELECT * FROM audit_logs
-         WHERE user_id = ? AND entity_type = ? AND entity_id = ?
-         ORDER BY created_at DESC"
+        "SELECT a.*, u.display_name as user_display_name, u.email as user_email 
+         FROM audit_logs a
+         LEFT JOIN users u ON a.user_id = u.id
+         WHERE a.entity_type = ? AND a.entity_id = ?
+         ORDER BY a.created_at DESC"
     )
-    .bind(user_id)
     .bind(entity_type)
     .bind(entity_id)
     .fetch_all(pool)

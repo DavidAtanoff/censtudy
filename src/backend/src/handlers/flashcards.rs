@@ -20,7 +20,7 @@ pub async fn get_next_card(
 ) -> Result<Json<serde_json::Value>, StatusCode> {
     let practice_mode = params.get("practice").map(|v| v == "true").unwrap_or(false);
 
-    let content = db::get_content_for_user(&state.pool, deck_id, user.id)
+    let content = db::get_content_by_id(&state.pool, deck_id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .ok_or(StatusCode::NOT_FOUND)?;
@@ -89,7 +89,7 @@ pub async fn submit_review(
     Path(deck_id): Path<i64>,
     Json(review): Json<FlashcardReview>,
 ) -> Result<StatusCode, StatusCode> {
-    let content = db::get_content_for_user(&state.pool, deck_id, user.id)
+    let content = db::get_content_by_id(&state.pool, deck_id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .ok_or(StatusCode::NOT_FOUND)?;
@@ -145,7 +145,7 @@ pub async fn get_stats(
     Extension(user): Extension<User>,
     Path(deck_id): Path<i64>,
 ) -> Result<Json<FlashcardStats>, StatusCode> {
-    let content = db::get_content_for_user(&state.pool, deck_id, user.id)
+    let content = db::get_content_by_id(&state.pool, deck_id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .ok_or(StatusCode::NOT_FOUND)?;

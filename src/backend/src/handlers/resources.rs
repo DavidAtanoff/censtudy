@@ -8,10 +8,10 @@ use crate::{db, models::{CreateResource, Resource, User}, AppState};
 
 pub async fn list_resources(
     State(state): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Extension(_user): Extension<User>,
     Path(unit_id): Path<i64>,
 ) -> Result<Json<Vec<Resource>>, StatusCode> {
-    db::list_resources_for_user(&state.pool, unit_id, user.id)
+    db::list_all_resources(&state.pool, unit_id)
         .await
         .map(Json)
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
@@ -19,13 +19,15 @@ pub async fn list_resources(
 
 pub async fn create_resource(
     State(state): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Extension(_user): Extension<User>,
     Path(unit_id): Path<i64>,
     Json(payload): Json<CreateResource>,
 ) -> Result<Json<Resource>, StatusCode> {
-    if !db::user_owns_unit(&state.pool, unit_id, user.id)
+    // Check unit existence only
+    if db::get_unit_by_id(&state.pool, unit_id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
+        .is_none()
     {
         return Err(StatusCode::NOT_FOUND);
     }
@@ -42,7 +44,8 @@ pub async fn create_resource(
                 return Err(StatusCode::BAD_REQUEST);
             };
 
-            if db::get_file_for_user(&state.pool, file_id, user.id)
+            // Check file existence only
+            if db::get_file_by_id(&state.pool, file_id)
                 .await
                 .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
                 .is_none()
@@ -64,7 +67,8 @@ pub async fn delete_resource(
     Extension(user): Extension<User>,
     Path(id): Path<i64>,
 ) -> Result<StatusCode, StatusCode> {
-    if db::get_resource_for_user(&state.pool, id, user.id)
+    // Check existence only
+    if db::get_resource_by_id(&state.pool, id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
         .is_none()
@@ -75,5 +79,17 @@ pub async fn delete_resource(
     db::delete_resource(&state.pool, id)
         .await
         .map(|_| StatusCode::NO_CONTENT)
-        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    
+    // Log audit
+    let _ = crate::handlers::audit::log_action(
+        &state.pool,
+        user.id,
+        "delete",
+        "resource",
+        id,
+        Some("Deleted resource"),
+    ).await;
+    
+    Ok(StatusCode::NO_CONTENT)
 }

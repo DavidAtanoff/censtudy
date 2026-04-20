@@ -21,6 +21,7 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 dotenv = "0.15"
 bcrypt = "0.15"
 jsonwebtoken = "9.2"
+regex = "1.10"
 ammonia = "3.3"
 urlencoding = "2.1"
 time = "=0.3.36"

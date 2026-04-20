@@ -88,7 +88,7 @@ Grading criteria:
         }],
         generation_config: GenerationConfig {
             thinking_config: ThinkingConfig {
-                thinking_level: "HIGH".to_string(),
+                thinking_level: "MINIMAL".to_string(),
             },
             response_mime_type: "application/json".to_string(),
         },
@@ -226,7 +226,7 @@ pub async fn chat_tutor(request: &crate::models::ChatRequest, study_guide_conten
         contents,
         generation_config: GenerationConfig {
             thinking_config: ThinkingConfig {
-                thinking_level: "HIGH".to_string(),
+                thinking_level: "MINIMAL".to_string(),
             },
             response_mime_type: "text/plain".to_string(),
         },
@@ -250,10 +250,30 @@ pub async fn chat_tutor(request: &crate::models::ChatRequest, study_guide_conten
     if let Ok(gemma_response) = response.json::<GemmaResponse>().await {
         if let Some(candidate) = gemma_response.candidates.first() {
             if let Some(part) = candidate.content.parts.first() {
-                return part.text.clone();
+                return clean_ai_response(&part.text);
             }
         }
     }
 
     "I could not formulate a proper response at this time.".to_string()
+}
+
+fn clean_ai_response(text: &str) -> String {
+    let mut cleaned = text.to_string();
+    
+    // List of common thinking/reasoning tags to strip
+    let patterns = [
+        (r"(?s)<think>.*?</think>", ""),
+        (r"(?s)<thought>.*?</thought>", ""),
+        (r"(?s)\[THOUGHT\].*?\[/THOUGHT\]", ""),
+        (r"(?s)\[REASONING\].*?\[/REASONING\]", ""),
+    ];
+
+    for (pattern, replacement) in &patterns {
+        if let Ok(re) = regex::Regex::new(pattern) {
+            cleaned = re.replace_all(&cleaned, *replacement).to_string();
+        }
+    }
+
+    cleaned.trim().to_string()
 }
