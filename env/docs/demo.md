@@ -1,229 +1,437 @@
+
 ::center
 ::font{size="44px" weight="800" color="#111827" family="Outfit" lh="1.02"}
-FORCES, MOMENTUM, AND IMPULSE
+BIOLOGY: INTRODUCTION TO ANIMALS & THE 9 PHYLA
 ::
-::muted A compact physics guide built to teach first, test often, and stick longer. ::
+::muted A comprehensive guide, flashcard deck, and test covering animal characteristics, development, and invertebrate diversity. ::
 ::
 
 ::lead
-Force changes motion. Momentum measures motion already in progress. Impulse explains how a force acting over time changes that momentum. If you understand how those three ideas connect, most first-pass mechanics problems stop feeling random.
+Animals are multicellular, heterotrophic organisms that lack cell walls and are capable of movement. From simple, asymmetrical sponges to complex, segmented chordates, the animal kingdom exhibits a fascinating progression of anatomical complexity, symmetry, and specialized body systems.
 ::
 
-::divider{label="Big Picture"} ::
+---
+
+# PART 1: COMPREHENSIVE STUDY GUIDE
+
+## 1. Animal Origins & Early Development
+
+All animals share a common ancestor: the **choanoflagellate**, a colonial protist. From this simple origin, complex life develops through a specific sequence of stages following fertilization.
 
 ::columns{count="3"}
 ::card
-### Force
-Force is an interaction that can change an object's velocity.
+### 1. Zygote to Blastula
+The fertilized egg (zygote) undergoes rapid cell division (cleavage) to form a 2-cell stage, then 16-cell, and eventually a hollow ball of cells called the **blastula**.
 ::
 |||
 ::card
-### Momentum
-Momentum is mass times velocity, written as $p = mv$.
+### 2. Gastrulation
+The blastula folds inward in a process called gastrulation, creating an opening called a blastopore. The resulting structure is the **gastrula**.
 ::
 |||
 ::card
-### Impulse
-Impulse is force times time, written as $J = F\Delta t$.
+### 3. Germ Layers
+During gastrulation, cells rearrange to form three distinct tissue layers (germ layers) that will eventually become all the organs in the body.
 ::
 ::
 
-::note{type="info" title="Golden Relationship"}
-The key bridge is:
+### The Three Germ Layers
+* **Endoderm (Inner):** Develops into the digestive tract and internal organs.
+* **Mesoderm (Middle):** Gives rise to muscles, bones, and the circulatory system.
+* **Ectoderm (Outer):** Forms the skin and the nervous system.
 
-$$
-J = \Delta p
-$$
-
-Impulse equals the change in momentum.
+::note{type="warning" title="Developmental Flaws"}
+If gastrulation does not occur properly, the germ layers will not form correctly, resulting in serious defects in the developing embryo because tissues and organs lack their foundational blueprint.
 ::
 
-::question{explanation="Momentum depends on both how much matter is moving and how fast it is moving."}
-# Which expression defines linear momentum?
-* [x] $p = mv$
-* $F = ma$
-* $J = F / \Delta t$
-* $p = m / v$
+::question{explanation="The ectoderm is the outermost layer, responsible for the external covering and the nervous system."}
+# Which germ layer eventually forms the skin and nervous system?
+* [x] Ectoderm
+* Mesoderm
+* Endoderm
+* Blastoderm
 ::
 
 ---
 
-::divider{label="Newton's Laws In Plain English"} ::
+## 2. Classification & Body Plans
 
-::columns{count="2"}
-::quote{cite="Newton's First Law in everyday language"}
-Objects keep doing what they are already doing unless something external forces a change.
+Animals are classified by their body plans, which include tissue complexity, symmetry, and internal cavities.
+
+### Symmetry
+* **Asymmetry:** No structural similarity around an axis (e.g., Sponges).
+* **Radial Symmetry:** Body parts arranged circularly around a central axis (e.g., Cnidarians, adult Echinoderms).
+* **Bilateral Symmetry:** The body can be divided into two mirrored halves (left/right). Organisms with bilateral symmetry typically exhibit **cephalization** (concentration of sense organs at the anterior/head end). 
+
+::divider{label="Anatomical Directions"} ::
+
+::center
+**Anterior:** Head end | **Posterior:** Tail end | **Dorsal:** Back side | **Ventral:** Belly side
+::
+
+### Body Cavities (Coeloms)
+A body cavity is a fluid-filled space that holds and cushions internal organs.
+
+::columns{count="3"}
+::card
+### Acoelomate
+No body cavity. Internally simple with only a gut. 
+*(e.g., Platyhelminthes/Flatworms)*
 ::
 |||
-::quote{cite="Newton's Second Law in everyday language"}
-Acceleration happens when there is net force, and heavier objects need more force for the same acceleration.
+::card
+### Pseudocoelomate
+A "false" cavity located *between* the endoderm and mesoderm. Limited in internal complexity and size.
+*(e.g., Nematoda/Roundworms)*
 ::
-::
-
-::justify
-Newton's Third Law is the easiest to say and the easiest to misuse. If skater A pushes skater B, then B pushes A with an equal force in the opposite direction. The forces are equal, but the accelerations do not need to be equal, because the masses can be different.
-::
-
-::note{type="warning" title="Common Mistake"}
-Equal and opposite forces act on **different objects**. They do not cancel each other inside a single free-body diagram.
-::
-
-::columns{count="2"}
-### Everyday Examples
-
-- Seatbelt stopping your body
-- Bat striking a baseball
-- Rocket exhaust pushing downward
 |||
-### Questions To Ask
-
-- What object am I analyzing?
-- What external forces act on it?
-- Is momentum conserved for the whole system?
+::card
+### Coelomate
+A "true" cavity located entirely *within* the mesoderm. Highly complex internally and capable of larger sizes.
+*(e.g., Mollusks, Annelids, Arthropods, Chordates)*
+::
 ::
 
-::question{explanation="Action-reaction force pairs are equal in magnitude, opposite in direction, and act on different bodies."}
-# Why do action-reaction forces not cancel each other in one object's free-body diagram?
-* [x] Because each force acts on a different object
-* Because they happen at different times
-* Because one force is always larger
-* Because only horizontal forces can be paired
+### Protostome vs. Deuterostome Development
+Coelomate animals split into two evolutionary paths based on early development patterns:
+1. **Protostomes:** The blastopore (original gastrula opening) develops into the **mouth**. (Mollusks, Annelids, Arthropods).
+2. **Deuterostomes:** The blastopore develops into the **anus**. (Echinoderms, Chordates).
+
+::note{type="info" title="Takeaway Message"}
+Protostomes and Deuterostomes have different developmental patterns. They differ in cell removal at the 4-cell stage, cell alignment at the 8-cell stage, the origin location of the mesoderm, and the fate of the blastopore.
 ::
 
 ---
 
-::divider{label="Impulse And Collisions"} ::
+## 3. Interactive: The 9 Phyla Explorer
 
-::lead
-If the same momentum change happens over a longer time, the average force gets smaller. That is why airbags, foam pits, and bent knees matter.
-::
-
-::card
-### Exam Heuristic
-When a collision problem mentions "same change in momentum" but different stopping times, compare the forces using time. More time means less average force.
-::
-
-::question{explanation="For a fixed change in momentum, increasing the collision time decreases the average force."}
-# A car and a wall produce the same momentum change with and without an airbag. Why does the airbag reduce injury risk?
-* [x] It increases stopping time, reducing average force
-* It removes momentum completely
-* It decreases the mass of the passenger
-* It reverses Newton's Third Law
-::
+Use the interactive tool below to explore the defining characteristics of the 9 major animal phyla.
 
 :::interactive
-<div style="padding:24px;border:1px solid #dbe2ea;border-radius:20px;background:#ffffff;box-shadow:0 18px 38px -32px rgba(15,23,42,0.25);font-family:Manrope,system-ui,sans-serif;">
-  <h3 style="margin:0 0 8px;font-size:20px;color:#111827;text-align:center;">Impulse Lab</h3>
-  <p style="margin:0 0 18px;color:#4b5563;text-align:center;">Move the sliders and watch momentum and kinetic energy update together.</p>
+<div style="padding:20px; font-family: system-ui, sans-serif; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;">
+  <h3 style="margin-top: 0; color: #0f172a;">Phylum Trait Explorer</h3>
+  <select id="phylum-select" style="padding: 10px; width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 16px; margin-bottom: 20px;">
+    <option value="porifera">Porifera (Sponges)</option>
+    <option value="cnidaria">Cnidaria (Jellyfish, Corals)</option>
+    <option value="platyhelminthes">Platyhelminthes (Flatworms)</option>
+    <option value="nematoda">Nematoda (Roundworms)</option>
+    <option value="mollusca">Mollusca (Snails, Squids, Bivalves)</option>
+    <option value="annelida">Annelida (Earthworms, Leeches)</option>
+    <option value="arthropoda">Arthropoda (Insects, Crustaceans)</option>
+    <option value="echinodermata">Echinodermata (Sea Stars, Urchins)</option>
+    <option value="chordata">Chordata (Tunicates, Lancelets, Vertebrates)</option>
+  </select>
 
-  <div style="display:grid;gap:14px;grid-template-columns:1fr;">
-    <label style="display:grid;gap:6px;color:#111827;font-weight:600;">
-      Mass (kg)
-      <input id="mass-slider" type="range" min="1" max="12" value="4" style="width:100%;">
-    </label>
-    <label style="display:grid;gap:6px;color:#111827;font-weight:600;">
-      Velocity (m/s)
-      <input id="velocity-slider" type="range" min="0" max="20" value="6" style="width:100%;">
-    </label>
-    <label style="display:grid;gap:6px;color:#111827;font-weight:600;">
-      Collision Time (s)
-      <input id="time-slider" type="range" min="0.1" max="2.0" step="0.1" value="0.5" style="width:100%;">
-    </label>
-  </div>
-
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:18px;">
-    <div style="border:1px solid #e5e7eb;border-radius:16px;padding:14px;background:#f9fafb;">
-      <div style="font-size:11px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#6b7280;">Momentum</div>
-      <div id="momentum-output" style="margin-top:6px;font-size:24px;font-weight:800;color:#111827;">24 kg m/s</div>
-    </div>
-    <div style="border:1px solid #e5e7eb;border-radius:16px;padding:14px;background:#f9fafb;">
-      <div style="font-size:11px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#6b7280;">Kinetic Energy</div>
-      <div id="energy-output" style="margin-top:6px;font-size:24px;font-weight:800;color:#111827;">72 J</div>
-    </div>
-    <div style="border:1px solid #e5e7eb;border-radius:16px;padding:14px;background:#f9fafb;">
-      <div style="font-size:11px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#6b7280;">Average Force To Stop</div>
-      <div id="force-output" style="margin-top:6px;font-size:24px;font-weight:800;color:#111827;">48 N</div>
-    </div>
-  </div>
-
-  <div style="margin-top:18px;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#f8fafc);padding:16px;">
-    <div style="font-size:11px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#6b7280;">Interpretation</div>
-    <p id="insight-output" style="margin:8px 0 0;color:#1f2937;line-height:1.7;">Doubling velocity increases momentum linearly, but kinetic energy rises much faster.</p>
+  <div id="trait-display" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+    <!-- Populated by JS -->
   </div>
 </div>
 
 <script>
-  const massSlider = document.getElementById('mass-slider');
-  const velocitySlider = document.getElementById('velocity-slider');
-  const timeSlider = document.getElementById('time-slider');
-
-  const momentumOutput = document.getElementById('momentum-output');
-  const energyOutput = document.getElementById('energy-output');
-  const forceOutput = document.getElementById('force-output');
-  const insightOutput = document.getElementById('insight-output');
-
-  const render = () => {
-    const mass = Number(massSlider.value);
-    const velocity = Number(velocitySlider.value);
-    const collisionTime = Number(timeSlider.value);
-
-    const momentum = mass * velocity;
-    const kineticEnergy = 0.5 * mass * velocity * velocity;
-    const avgForce = collisionTime > 0 ? momentum / collisionTime : 0;
-
-    momentumOutput.textContent = `${momentum.toFixed(1)} kg m/s`;
-    energyOutput.textContent = `${kineticEnergy.toFixed(1)} J`;
-    forceOutput.textContent = `${avgForce.toFixed(1)} N`;
-
-    if (velocity >= 14) {
-      insightOutput.textContent = 'High speed pushes kinetic energy up rapidly. That is why fast collisions become dangerous much faster than intuition expects.';
-    } else if (collisionTime >= 1.2) {
-      insightOutput.textContent = 'A longer stopping time lowers average force, even if the momentum change is the same.';
-    } else {
-      insightOutput.textContent = 'Momentum scales with mass and velocity, while kinetic energy depends especially strongly on velocity.';
-    }
+  const data = {
+    porifera: { sym: "Asymmetry", coelom: "None (No Tissues)", traits: "Sessile adults, filter feeders using flagellated collar cells, spicules for structure." },
+    cnidaria: { sym: "Radial", coelom: "Acoelomate", traits: "Stinging cells (cnidocytes/nematocysts), nerve net, two body forms: Polyp (sessile) and Medusa (motile)." },
+    platyhelminthes: { sym: "Bilateral", coelom: "Acoelomate", traits: "Cephalization, extremely flat bodies for easy diffusion, mostly aquatic, ~80% are parasites (e.g., tapeworms)." },
+    nematoda: { sym: "Bilateral", coelom: "Pseudocoelomate", traits: "One-way digestive tract, hydrostatic skeleton, diverse habitats, many are parasitic (e.g., heartworms)." },
+    mollusca: { sym: "Bilateral", coelom: "Coelomate (Protostome)", traits: "Mantle (secretes shell), radula (feeding), muscular foot. Includes Gastropods, Bivalves, and Cephalopods." },
+    annelida: { sym: "Bilateral", coelom: "Coelomate (Protostome)", traits: "Segmented bodies, setae (hair-like anchors), clitellum for reproduction. Segmentation allows surviving damage and complex movements." },
+    arthropoda: { sym: "Bilateral", coelom: "Coelomate (Protostome)", traits: "Chitin exoskeleton (requires molting), jointed appendages, segmented body (head, thorax, abdomen). Undergoes metamorphosis." },
+    echinodermata: { sym: "Radial (Adults)", coelom: "Coelomate (Deuterostome)", traits: "Spiny skin, water vascular system with tube feet (for movement, respiration, circulation), capable of regeneration." },
+    chordata: { sym: "Bilateral", coelom: "Coelomate (Deuterostome)", traits: "Four main traits: Notochord, Dorsal hollow nerve cord, Pharyngeal slits, Post-anal tail." }
   };
 
-  [massSlider, velocitySlider, timeSlider].forEach((slider) => {
-    slider.addEventListener('input', render);
-  });
+  const select = document.getElementById('phylum-select');
+  const display = document.getElementById('trait-display');
 
+  const render = () => {
+    const phylum = data[select.value];
+    display.innerHTML = `
+      <p><strong>Symmetry:</strong> <span style="color: #2563eb;">${phylum.sym}</span></p>
+      <p><strong>Body Cavity:</strong> <span style="color: #059669;">${phylum.coelom}</span></p>
+      <p><strong>Key Characteristics:</strong> ${phylum.traits}</p>
+    `;
+  };
+
+  select.addEventListener('change', render);
   render();
 </script>
 :::
 
 ---
 
-::divider{label="Rapid Review"} ::
+## 4. The 11 Body Systems Overview
 
-::columns{count="2"}
-::card
-### If You See...
+Complex animals utilize specialized systems to maintain homeostasis and survive.
 
-- momentum conserved
-- isolated system
-- explosion
-- collision
+1. **Integumentary:** External covering; protects against damage.
+2. **Skeletal:** Form and support.
+3. **Muscular:** Movement.
+4. **Nervous:** Fast-acting control system utilizing electrical signals.
+5. **Endocrine:** Slow-acting control system utilizing hormones (chemical messengers).
+6. **Circulatory:** Transports materials (oxygen, nutrients, waste) around the body.
+7. **Respiratory:** Gas exchange (Oxygen in, Carbon Dioxide out).
+8. **Digestive:** Food processing (digestion, absorption, elimination).
+9. **Excretory:** Removal of metabolic wastes and toxins (e.g., kidneys).
+10. **Reproductive:** Production and development of offspring.
+11. **Immune:** Protects the body from external invaders (pathogens).
 
-think about **before/after system momentum**.
-::
-|||
-::card
-### If You See...
-
-- safety device
-- impact time
-- crash cushion
-- landing mat
-
-think about **impulse and average force**.
-::
+::question{explanation="The endocrine system relies on hormones traveling through the bloodstream to enact slow, prolonged changes."}
+# Which body system acts as a slow-acting control system using chemical messengers?
+* [x] Endocrine
+* Nervous
+* Excretory
+* Integumentary
 ::
 
-::question{answer="Impulse equals change in momentum." keywords="impulse,change,momentum,delta p" explanation="The anchor idea is J = delta p."}
-# State the relationship between impulse and momentum in one sentence.
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# PART 2: UNIT FLASHCARDS
+
+Use these flashcards to rapidly drill your knowledge of animal characteristics and phyla classifications.
+
+::flashcard
+**Front**: What defines an animal?
+**Back**: Multicellular heterotrophs that lack cell walls and are capable of movement.
 ::
 
-::small
-Author note: this demo intentionally mixes formatting, layout, embedded checks, and a live interactive block so it can serve as both a sample guide and a renderer regression test.
+::flashcard
+**Front**: What is the evolutionary significance of Choanoflagellates?
+**Back**: They are colonial protists believed to be the common ancestor of all animals.
+::
+
+::flashcard
+**Front**: Place the early developmental stages in order: Gastrula, Zygote, Blastula.
+**Back**: Zygote → Blastula → Gastrula.
+::
+
+::flashcard
+**Front**: What is parthenogenesis?
+**Back**: A form of asexual reproduction often referred to as "virgin birth".
+::
+
+::flashcard
+**Front**: What does the Mesoderm germ layer develop into?
+**Back**: Muscles, bones, and the circulatory system.
+::
+
+::flashcard
+**Front**: Define "Cephalization".
+**Back**: The concentration of sensory organs and a brain at the anterior (head) end of an animal; typically found in bilaterally symmetrical animals.
+::
+
+::flashcard
+**Front**: What is the difference between a protostome and a deuterostome?
+**Back**: In protostomes, the blastopore becomes the mouth. In deuterostomes, it becomes the anus.
+::
+
+::flashcard
+**Front**: What is the function of the collar cells in Phylum Porifera?
+**Back**: They have flagella that pull water through the sponge for filter feeding.
+::
+
+::flashcard
+**Front**: What are the two body forms of Cnidarians?
+**Back**: Polyp (sessile/stationary) and Medusa (motile/free-swimming).
+::
+
+::flashcard
+**Front**: What unique cellular structure defines Phylum Cnidaria?
+**Back**: Cnidocytes, which contain stinging structures called nematocysts.
+::
+
+::flashcard
+**Front**: Why are flatworms (Platyhelminthes) so flat?
+**Back**: They are acoelomates without circulatory systems, so they must be flat to allow for easy diffusion of oxygen and nutrients.
+::
+
+::flashcard
+**Front**: Which phylum has a pseudocoelom and a one-way digestive tract?
+**Back**: Phylum Nematoda (Roundworms).
+::
+
+::flashcard
+**Front**: What is the function of the "mantle" in Mollusks?
+**Back**: It is a membrane surrounding internal organs that often secretes the shell.
+::
+
+::flashcard
+**Front**: What evolutionary advantage does "segmentation" provide to Annelids and Arthropods?
+**Back**: It allows them to survive localized body damage and perform highly complex, precise movements.
+::
+
+::flashcard
+**Front**: What are "setae" in Phylum Annelida?
+**Back**: Hair-like anchors that assist earthworms and other annelids in movement.
+::
+
+::flashcard
+**Front**: What are the three main body segments of an Arthropod?
+**Back**: Head, Thorax, and Abdomen.
+::
+
+::flashcard
+**Front**: Because Arthropods have a rigid exoskeleton made of chitin, what process must they undergo to grow?
+**Back**: Molting.
+::
+
+::flashcard
+**Front**: What is the function of the water vascular system in Echinoderms?
+**Back**: It powers the tube feet, allowing for movement, respiration, and circulation.
+::
+
+::flashcard
+**Front**: What are the four defining characteristics of Phylum Chordata?
+**Back**: Notochord, Dorsal hollow nerve cord, Post-anal tail, and Pharyngeal slits.
+::
+
+::flashcard
+**Front**: Which body system provides fast-acting control using electrical signals?
+**Back**: The Nervous System.
+::
+
+
+
+
+
+
+
+
+
+
+# PART 3: SUPER IN-DEPTH UNIT TEST
+
+Assess your mastery of the material with this comprehensive test covering characteristics, development, body systems, and all 9 phyla.
+
+### Section 1: Early Development & Organization
+
+::question{explanation="Acoelomates have no cavity. Pseudocoelomates have a cavity between the endo/mesoderm. Coelomates have a cavity entirely within the mesoderm."}
+# An animal features a fluid-filled body cavity that is located entirely within the mesoderm tissue layer. How is this animal classified?
+* [x] Coelomate
+* Acoelomate
+* Pseudocoelomate
+* Asymmetrical
+::
+
+::question{answer="Zygote, blastula, gastrula" keywords="zygote,blastula,gastrula" explanation="Fertilization yields a zygote, which divides into a hollow blastula, which folds to become a gastrula."}
+# List the three major early developmental stages of an animal in chronological order, starting immediately after fertilization.
+::
+
+::question{explanation="The blastopore is the opening formed during gastrulation. In protostomes, this becomes the mouth. In deuterostomes (like humans and sea stars), it becomes the anus."}
+# During embryonic development, an organism's blastopore eventually develops into its mouth. This organism must be a:
+* [x] Protostome
+* Deuterostome
+* Choanoflagellate
+* Pseudocoelomate
+::
+
+::question{explanation="Ectoderm forms skin/nerves. Endoderm forms the gut. Mesoderm forms muscle, bone, and blood."}
+# The circulatory system and skeletal muscles arise from which embryonic germ layer?
+* [x] Mesoderm
+* Ectoderm
+* Endoderm
+* Epidermis
+::
+
+### Section 2: Invertebrate Phyla - The Lower Invertebrates
+
+::question{explanation="Sponges are sessile, asymmetrical filter feeders lacking true tissues and organs."}
+# Sponges (Phylum Porifera) differ from all other animal phyla primarily because they:
+* [x] Lack true tissues and organs
+* Reproduce exclusively via parthenogenesis
+* Exhibit bilateral symmetry
+* Possess a closed circulatory system
+::
+
+::question{answer="Cnidocytes" keywords="cnidocyte,cnidocytes,nematocyst,nematocysts" explanation="Cnidocytes contain the stinging nematocysts used for defense and prey capture."}
+# What is the specific name of the stinging cells found on the tentacles of jellyfish and sea anemones?
+::
+
+::question{explanation="Because flatworms lack a circulatory system and a coelom, they rely on simple diffusion for gas exchange, which requires a high surface-area-to-volume ratio (a flat body)."}
+# Why are organisms in the Phylum Platyhelminthes evolutionarily constrained to a flat body shape?
+* [x] To ensure efficient diffusion of oxygen and nutrients across their tissues
+* To allow them to fit inside the host's bloodstream
+* Because they possess a hydrostatic skeleton that constantly deflates
+* To streamline their bodies for fast swimming in ocean currents
+::
+
+::question{explanation="Roundworms belong to Phylum Nematoda. They have a one-way gut and a pseudocoelom."}
+# You identify an organism that has bilateral symmetry, a pseudocoelom, and a one-way digestive tract. To which phylum does it belong?
+* [x] Nematoda
+* Annelida
+* Platyhelminthes
+* Mollusca
+::
+
+### Section 3: Invertebrate Phyla - Complex Invertebrates
+
+::question{answer="Mantle" keywords="mantle" explanation="The mantle is the tissue that covers the internal organs and, in species with shells, secretes the calcium carbonate shell."}
+# What is the anatomical structure in mollusks that surrounds the internal organs and is responsible for secreting the shell?
+::
+
+::question{explanation="Squids use a radula to help process food. Annelids (earthworms) use setae. Sponges use collar cells. Cnidarians use a nerve net."}
+# A radula is a specialized feeding structure most likely to be found in which of the following organisms?
+* [x] A squid (Mollusca)
+* An earthworm (Annelida)
+* A sea star (Echinodermata)
+* A sponge (Porifera)
+::
+
+::question{explanation="Arthropods feature an exoskeleton made of chitin. Because chitin does not grow with the animal, they must shed it via molting."}
+# Arthropods are highly successful animals that possess a rigid exoskeleton made of chitin. What physiological process is absolutely necessary for an arthropod to grow larger?
+* [x] Molting
+* Gastrulation
+* Parthenogenesis
+* Segmentation
+::
+
+::question{answer="Head, thorax, abdomen" keywords="head,thorax,abdomen" explanation="Arthropods typically have segmented bodies divided into these three specialized functional regions."}
+# Name the three primary body segments characteristic of Phylum Arthropoda.
+::
+
+::question{explanation="Water enters the water vascular system through the madreporite and powers the tube feet."}
+# The water vascular system, utilizing tube feet for movement, respiration, and circulation, is the defining characteristic of which phylum?
+* [x] Echinodermata
+* Cnidaria
+* Arthropoda
+* Porifera
+::
+
+### Section 4: Chordates & Body Systems
+
+::question{explanation="The four chordate traits are: Notochord, Dorsal hollow nerve cord, Pharyngeal slits, and Post-anal tail. Vertebrae only appear in the Vertebrate subphylum, while invertebrate chordates (tunicates, lancelets) lack them."}
+# Which of the following is NOT one of the four defining characteristics of all chordates?
+* [x] A bony vertebral column
+* A notochord
+* A dorsal hollow nerve cord
+* Pharyngeal slits
+::
+
+::question{answer="Excretory" keywords="excretory,excretory system" explanation="The excretory system filters the blood and removes metabolic wastes and toxins from the body."}
+# Which of the 11 body systems is primarily responsible for the removal of metabolic wastes and toxins from the organism?
+::
+
+::question{explanation="Tunicates and Lancelets are invertebrate chordates. They possess the four defining chordate characteristics but lack a backbone."}
+# Tunicates and lancelets are unique because they:
+* [x] Are classified as invertebrate chordates
+* Belong to Echinodermata but lack radial symmetry
+* Are the only Arthropods lacking jointed appendages
+* Reproduce exclusively through fragmentation
+::
+
+::question{answer="Protostome" keywords="protostome" explanation="Earthworms are Annelids, which are coelomate protostomes."}
+# Based on early developmental patterns, is an earthworm (Phylum Annelida) a protostome or a deuterostome? 
 ::

@@ -1,11 +1,12 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
-import { Plus, BookOpen, BarChart3, FileText, LogOut, User } from 'lucide-react'
-import { getCourses, getCurrentUser, getKnowledgeGaps, logout } from '@/lib/api'
+import { Plus, BookOpen, BarChart3, FileText, LogOut, User, Upload } from 'lucide-react'
+import { getCourses, getCurrentUser, getKnowledgeGaps, logout, createCourse, createUnit, createContent } from '@/lib/api'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { formatDate } from '@/lib/utils'
 import { AlertCircle } from 'lucide-react'
+import { useRef, useState } from 'react'
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -24,6 +25,56 @@ export default function Dashboard() {
     await logout().catch(() => undefined)
     queryClient.clear()
     navigate('/login')
+  }
+
+  const [isImporting, setIsImporting] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    setIsImporting(true)
+    try {
+      const text = await file.text()
+      const data = JSON.parse(text)
+      
+      if (!data.courses || !Array.isArray(data.courses)) {
+        alert("Invalid JSON format.")
+        setIsImporting(false)
+        return
+      }
+
+      for (const course of data.courses) {
+        const cRes = await createCourse({ title: course.title, description: course.description })
+        const newCourseId = cRes.data.id
+        
+        for (const unit of (course.units || [])) {
+          const uRes = await createUnit(newCourseId, { 
+            title: unit.title, 
+            description: unit.description, 
+            order_index: unit.order_index 
+          })
+          const newUnitId = uRes.data.id
+
+          for (const content of (unit.content || [])) {
+            await createContent(newUnitId, {
+              content_type: content.content_type,
+              title: content.title,
+              studyml_content: content.studyml_content
+            })
+          }
+        }
+      }
+      
+      alert("Import successful!")
+      queryClient.invalidateQueries({ queryKey: ['courses'] })
+    } catch (err) {
+      console.error("Import error", err)
+      alert("Import failed. Check console for details.")
+    } finally {
+      setIsImporting(false)
+    }
   }
 
   const { data: courses, isLoading } = useQuery({
@@ -77,6 +128,21 @@ export default function Dashboard() {
                 <span className="hidden sm:inline">New Course</span>
               </Button>
             </Link>
+            {user?.email === 'atanodav@berkeleyprep.org' && (
+              <>
+                <input 
+                  type="file" 
+                  accept=".json" 
+                  ref={fileInputRef} 
+                  className="hidden" 
+                  onChange={handleImport} 
+                />
+                <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()} disabled={isImporting}>
+                  <Upload className="w-4 h-4 sm:mr-2" />
+                  <span className="hidden sm:inline">{isImporting ? 'Importing...' : 'Import'}</span>
+                </Button>
+              </>
+            )}
             <Button variant="outline" size="sm" onClick={handleLogout}>
               <LogOut className="w-4 h-4 sm:mr-2" />
               <span className="hidden sm:inline">Logout</span>

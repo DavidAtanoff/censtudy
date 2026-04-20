@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { cn } from '@/lib/utils'
 import { gradeAnswer } from '@/lib/api'
-import { renderStudyMlToHtml } from '@/lib/studyml'
+import { renderStudyMlToHtml, markdownToHtml } from '@/lib/studyml'
 
 interface Props {
   content: string
@@ -138,9 +138,9 @@ export default function StudyMLRenderer({
           result.innerHTML = `
             <div class="rounded-2xl border ${tone.border} ${tone.background} px-4 py-3 ${tone.text}">
               <div class="font-semibold">${tone.title}</div>
-              <div class="mt-1 text-sm leading-6 ${tone.text}" style="opacity:0.85">${feedback.feedback}</div>
+              <div class="mt-1 text-sm leading-6 ${tone.text} studyml-markdown feedback-content" style="opacity:0.85">${markdownToHtml(feedback.feedback)}</div>
               ${missingConcepts}
-              ${explanationHtml ? `<div class="mt-2 text-sm leading-6 ${tone.text}" style="opacity:0.85">${explanationHtml}</div>` : ''}
+              ${explanationHtml ? `<div class="mt-2 text-sm leading-6 ${tone.text} studyml-markdown" style="opacity:0.85">${explanationHtml}</div>` : ''}
             </div>
           `
         } catch {

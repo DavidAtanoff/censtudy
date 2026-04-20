@@ -117,8 +117,9 @@ Grading criteria:
     let gemma_response: GemmaResponse = response.json().await?;
     
     if let Some(candidate) = gemma_response.candidates.first() {
-        if let Some(part) = candidate.content.parts.first() {
-            let raw_text = &part.text;
+        if !candidate.content.parts.is_empty() {
+            let raw_text_string = candidate.content.parts.iter().map(|p| p.text.as_str()).collect::<Vec<&str>>().join("\n");
+            let raw_text = &raw_text_string;
             
             let clean_json = if let Some(start) = raw_text.find('{') {
                 if let Some(end) = raw_text.rfind('}') {
@@ -249,8 +250,9 @@ pub async fn chat_tutor(request: &crate::models::ChatRequest, study_guide_conten
 
     if let Ok(gemma_response) = response.json::<GemmaResponse>().await {
         if let Some(candidate) = gemma_response.candidates.first() {
-            if let Some(part) = candidate.content.parts.first() {
-                return clean_ai_response(&part.text);
+            if !candidate.content.parts.is_empty() {
+                let full_text = candidate.content.parts.iter().map(|p| p.text.as_str()).collect::<Vec<&str>>().join("\n");
+                return clean_ai_response(&full_text);
             }
         }
     }

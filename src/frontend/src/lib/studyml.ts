@@ -795,11 +795,11 @@ function splitKeywords(raw: string | undefined): string[] {
     .filter(Boolean)
 }
 
-function markdownToHtml(markdown: string): string {
+export function markdownToHtml(markdown: string): string {
   return marked.parse(prepareMarkdown(markdown)) as string
 }
 
-function markdownToInlineHtml(markdown: string): string {
+export function markdownToInlineHtml(markdown: string): string {
   return marked.parseInline(prepareMarkdown(markdown)) as string
 }
 
