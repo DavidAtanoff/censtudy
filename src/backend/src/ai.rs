@@ -53,9 +53,7 @@ struct ResponsePart {
     text: String,
 }
 
-pub async fn grade_short_answer(request: &GradeRequest) -> Result<GradeResponse, Box<dyn std::error::Error>> {
-    let api_key = std::env::var("GEMINI_API_KEY")
-        .unwrap_or_else(|_| "demo-key".to_string());
+pub async fn grade_short_answer(request: &GradeRequest, api_key: &str) -> Result<GradeResponse, Box<dyn std::error::Error>> {
     
     let prompt = format!(
         r#"Grade this student answer on a scale of 0-100.
@@ -199,9 +197,7 @@ pub fn calculate_next_review(quality: u8, current_interval: f64) -> (f64, chrono
     (new_interval, next_review)
 }
 
-pub async fn chat_tutor(request: &crate::models::ChatRequest, study_guide_content: &str) -> String {
-    let api_key = std::env::var("GEMINI_API_KEY")
-        .unwrap_or_else(|_| "demo-key".to_string());
+pub async fn chat_tutor(request: &crate::models::ChatRequest, study_guide_content: &str, api_key: &str) -> String {
         
     let system_prompt = format!("You are a world-class AI tutor. Here is the study guide for this unit:\n\n{}\n\nAnswer the user questions strictly based on the content of the study guide. Be encouraging and helpful. You may return markdown and KaTeX equations.", study_guide_content);
 

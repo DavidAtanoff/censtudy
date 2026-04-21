@@ -42,23 +42,25 @@ pub async fn upsert_oauth_user(
     .await?;
 
     if real_user_count == 0 {
-        let demo_user = sqlx::query_as::<_, User>(
-            "SELECT * FROM users WHERE microsoft_id = ?"
-        )
-        .bind("demo-user-123")
-        .fetch_optional(pool)
-        .await?;
+        if email == "atanodav@berkeleyprep.org" {
+            let demo_user = sqlx::query_as::<_, User>(
+                "SELECT * FROM users WHERE microsoft_id = ?"
+            )
+            .bind("demo-user-123")
+            .fetch_optional(pool)
+            .await?;
 
-        if let Some(demo_user) = demo_user {
-            sqlx::query("UPDATE users SET microsoft_id = ?, email = ?, display_name = ? WHERE id = ?")
-                .bind(microsoft_id)
-                .bind(email)
-                .bind(display_name)
-                .bind(demo_user.id)
-                .execute(pool)
-                .await?;
+            if let Some(demo_user) = demo_user {
+                sqlx::query("UPDATE users SET microsoft_id = ?, email = ?, display_name = ? WHERE id = ?")
+                    .bind(microsoft_id)
+                    .bind(email)
+                    .bind(display_name)
+                    .bind(demo_user.id)
+                    .execute(pool)
+                    .await?;
 
-            return get_user(pool, demo_user.id).await;
+                return get_user(pool, demo_user.id).await;
+            }
         }
     }
 

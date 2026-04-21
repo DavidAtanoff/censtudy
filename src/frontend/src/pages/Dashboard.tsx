@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
-import { Plus, BookOpen, BarChart3, FileText, LogOut, User, Upload } from 'lucide-react'
-import { getCourses, getCurrentUser, getKnowledgeGaps, logout, createCourse, createUnit, createContent } from '@/lib/api'
+import { Plus, BookOpen, BarChart3, FileText, LogOut, User, Upload, Key } from 'lucide-react'
+import { getCourses, getCurrentUser, getKnowledgeGaps, logout, createCourse, createUnit, createContent, updateGeminiKey } from '@/lib/api'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { formatDate } from '@/lib/utils'
@@ -29,6 +29,17 @@ export default function Dashboard() {
 
   const [isImporting, setIsImporting] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleUpdateKey = async () => {
+    const newKey = window.prompt("Enter new Gemini API Key to override current one:");
+    if (!newKey) return;
+    try {
+      await updateGeminiKey(newKey);
+      alert("Gemini API Key updated successfully!");
+    } catch (e) {
+      alert("Failed to update API key");
+    }
+  }
 
   const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -122,14 +133,20 @@ export default function Dashboard() {
                 <span className="hidden sm:inline">Audit</span>
               </Button>
             </Link>
-            <Link to="/create/course">
-              <Button size="sm">
-                <Plus className="w-4 h-4 sm:mr-2" />
-                <span className="hidden sm:inline">New Course</span>
-              </Button>
-            </Link>
+            {user?.email === 'atanodav@berkeleyprep.org' && (
+              <Link to="/create/course">
+                <Button size="sm">
+                  <Plus className="w-4 h-4 sm:mr-2" />
+                  <span className="hidden sm:inline">New Course</span>
+                </Button>
+              </Link>
+            )}
             {user?.email === 'atanodav@berkeleyprep.org' && (
               <>
+                <Button variant="outline" size="sm" onClick={handleUpdateKey}>
+                  <Key className="w-4 h-4 sm:mr-2" />
+                  <span className="hidden sm:inline">Set API Key</span>
+                </Button>
                 <input 
                   type="file" 
                   accept=".json" 
@@ -220,12 +237,14 @@ export default function Dashboard() {
             <p className="text-sm sm:text-base text-muted-foreground mb-6">
               Create your first course to start learning
             </p>
-            <Link to="/create/course">
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                Create Course
-              </Button>
-            </Link>
+            {user?.email === 'atanodav@berkeleyprep.org' && (
+              <Link to="/create/course">
+                <Button>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Course
+                </Button>
+              </Link>
+            )}
           </Card>
         )}
       </main>

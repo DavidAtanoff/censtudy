@@ -6,12 +6,37 @@ use axum::{
 use std::sync::Arc;
 use crate::{ai, models::{GradeRequest, GradeResponse, User}, AppState};
 
+#[derive(serde::Deserialize)]
+pub struct UpdateKeyRequest {
+    pub key: String,
+}
+
+pub async fn update_gemini_key(
+    State(state): State<Arc<AppState>>,
+    Extension(user): Extension<User>,
+    Json(payload): Json<UpdateKeyRequest>,
+) -> Result<StatusCode, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+    
+    let mut key_write = state.custom_gemini_key.write().await;
+    *key_write = Some(payload.key);
+    
+    Ok(StatusCode::OK)
+}
+
 pub async fn grade_answer(
-    State(_state): State<Arc<AppState>>,
+    State(state): State<Arc<AppState>>,
     Extension(_user): Extension<User>,
     Json(request): Json<GradeRequest>,
 ) -> Result<Json<GradeResponse>, StatusCode> {
-    ai::grade_short_answer(&request)
+    let api_key = {
+        let custom = state.custom_gemini_key.read().await;
+        custom.clone().unwrap_or_else(|| std::env::var("GEMINI_API_KEY").unwrap_or_else(|_| "demo-key".to_string()))
+    };
+
+    ai::grade_short_answer(&request, &api_key)
         .await
         .map(Json)
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
@@ -43,7 +68,12 @@ pub async fn chat_with_tutor(
         Err(_) => "Failed to load study guide.".to_string()
     };
 
-    let response_text = ai::chat_tutor(&request, &study_guide).await;
+    let api_key = {
+        let custom = state.custom_gemini_key.read().await;
+        custom.clone().unwrap_or_else(|| std::env::var("GEMINI_API_KEY").unwrap_or_else(|_| "demo-key".to_string()))
+    };
+
+    let response_text = ai::chat_tutor(&request, &study_guide, &api_key).await;
     
     Ok(Json(crate::models::ChatResponse {
         response: response_text

@@ -21,6 +21,10 @@ pub async fn create_course(
     Extension(user): Extension<User>,
     Json(course): Json<CreateCourse>,
 ) -> Result<Json<Course>, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+    
     let created = db::create_course(&state.pool, &course, user.id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
@@ -56,6 +60,10 @@ pub async fn update_course(
     Path(id): Path<i64>,
     Json(course): Json<CreateCourse>,
 ) -> Result<Json<Course>, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+    
     // Check existence only
     if db::get_course_by_id(&state.pool, id)
         .await
@@ -87,6 +95,10 @@ pub async fn delete_course(
     Extension(user): Extension<User>,
     Path(id): Path<i64>,
 ) -> Result<StatusCode, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+    
     // Check existence only
     if db::get_course_by_id(&state.pool, id)
         .await

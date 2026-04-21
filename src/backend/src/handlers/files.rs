@@ -15,6 +15,10 @@ pub async fn upload_file(
     Extension(user): Extension<User>,
     mut multipart: Multipart,
 ) -> Result<Json<File>, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+    
     while let Some(field) = multipart.next_field().await.map_err(|_| StatusCode::BAD_REQUEST)? {
         let name = field.name().unwrap_or("").to_string();
         
@@ -149,6 +153,10 @@ pub async fn delete_file(
     Extension(user): Extension<User>,
     Path(id): Path<i64>,
 ) -> Result<StatusCode, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+    
     let file = crate::db::get_file_by_id(&state.pool, id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?

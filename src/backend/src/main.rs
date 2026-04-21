@@ -113,6 +113,7 @@ async fn main() {
             secure_cookies,
             azure,
         },
+        custom_gemini_key: Arc::new(tokio::sync::RwLock::new(None)),
     });
 
     let protected_routes = Router::new()
@@ -139,6 +140,7 @@ async fn main() {
         .route("/api/quiz/:quiz_id/attempts", get(handlers::quiz::get_attempts))
         .route("/api/ai/grade", post(handlers::ai::grade_answer))
         .route("/api/units/:unit_id/chat", post(handlers::ai::chat_with_tutor))
+        .route("/api/admin/gemini-keys", post(handlers::ai::update_gemini_key))
         .route("/api/files", post(handlers::files::upload_file))
         .route("/api/files", get(handlers::files::list_files))
         .route("/api/files/:id", get(handlers::files::get_file))
@@ -218,6 +220,7 @@ pub struct AppState {
     pub http_client: reqwest::Client,
     pub frontend_origin: String,
     pub auth: AuthState,
+    pub custom_gemini_key: Arc<tokio::sync::RwLock<Option<String>>>,
 }
 
 #[derive(Clone)]

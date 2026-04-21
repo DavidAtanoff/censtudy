@@ -8,6 +8,7 @@ import { Card, CardContent } from './ui/Card'
 
 interface Props {
   unitId: number
+  isAdmin?: boolean
 }
 
 interface ResourcePayload {
@@ -17,7 +18,7 @@ interface ResourcePayload {
   file_id?: number
 }
 
-export default function DriveTab({ unitId }: Props) {
+export default function DriveTab({ unitId, isAdmin }: Props) {
   const queryClient = useQueryClient()
   const [isAdding, setIsAdding] = useState(false)
   const [type, setType] = useState<'file' | 'link'>('file')
@@ -96,10 +97,12 @@ export default function DriveTab({ unitId }: Props) {
     <div className="space-y-6">
       <div className="flex justify-between items-center px-2">
         <h2 className="text-xl font-bold">Unit Drive</h2>
-        <Button onClick={() => setIsAdding(true)} size="sm">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Resource
-        </Button>
+        {isAdmin && (
+          <Button onClick={() => setIsAdding(true)} size="sm">
+            <Plus className="w-4 h-4 mr-2" />
+            Add Resource
+          </Button>
+        )}
       </div>
 
       {isAdding && (
@@ -196,13 +199,15 @@ export default function DriveTab({ unitId }: Props) {
                     </Button>
                   </a>
                 )}
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => { if(confirm('Delete resource?')) deleteResourceMutation.mutate(resource.id) }}
-                >
-                  <Trash2 className="w-4 h-4 text-muted-foreground hover:text-destructive" />
-                </Button>
+                {isAdmin && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => { if(confirm('Delete resource?')) deleteResourceMutation.mutate(resource.id) }}
+                  >
+                    <Trash2 className="w-4 h-4 text-muted-foreground hover:text-destructive" />
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>

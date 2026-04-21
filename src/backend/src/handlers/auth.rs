@@ -31,7 +31,7 @@ pub struct AuthConfigResponse {
 
 #[derive(Debug, Serialize, Deserialize)]
 struct SessionClaims {
-    sub: i64,
+    sub: String,
     exp: usize,
 }
 
@@ -285,7 +285,7 @@ pub async fn auth_callback(
     let exp = (chrono::Utc::now() + chrono::Duration::days(14)).timestamp() as usize;
     let token = match encode(
         &Header::default(),
-        &SessionClaims { sub: user.id, exp },
+        &SessionClaims { sub: user.microsoft_id.clone(), exp },
         &EncodingKey::from_secret(state.auth.session_secret.as_bytes()),
     ) {
         Ok(token) => token,
@@ -351,7 +351,7 @@ pub async fn get_user_from_jar(state: &AppState, jar: &CookieJar) -> Option<User
     )
     .ok()?;
 
-    db::get_user(&state.pool, token.claims.sub).await.ok()
+    db::get_user_by_microsoft_id(&state.pool, &token.claims.sub).await.ok().flatten()
 }
 
 pub async fn require_user_from_jar(state: &AppState, jar: &CookieJar) -> Result<User, StatusCode> {

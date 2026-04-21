@@ -23,6 +23,10 @@ pub async fn create_content(
     Path(unit_id): Path<i64>,
     Json(content): Json<CreateContent>,
 ) -> Result<Json<Content>, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+    
     crate::studyml::validate_content(&content.content_type, &content.studyml_content)
         .map_err(|_| StatusCode::BAD_REQUEST)?;
 
@@ -70,6 +74,10 @@ pub async fn update_content(
     Path(id): Path<i64>,
     Json(content): Json<CreateContent>,
 ) -> Result<Json<Content>, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+    
     crate::studyml::validate_content(&content.content_type, &content.studyml_content)
         .map_err(|_| StatusCode::BAD_REQUEST)?;
 
@@ -103,6 +111,10 @@ pub async fn delete_content(
     Extension(user): Extension<User>,
     Path(id): Path<i64>,
 ) -> Result<StatusCode, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+
     if db::get_content_by_id(&state.pool, id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?

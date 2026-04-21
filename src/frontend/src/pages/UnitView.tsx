@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, BookOpen, CheckCircle, FileText, Layers, MessageSquareText, Plus } from 'lucide-react'
-import { getContent, getCurrentUser, getUnit, updateUserStats } from '@/lib/api'
+import { ArrowLeft, BookOpen, CheckCircle, FileText, Layers, MessageSquareText, Plus, Trash2 } from 'lucide-react'
+import { getContent, getCurrentUser, getUnit, updateUserStats, deleteContent } from '@/lib/api'
 import { analyzeStudyMl } from '@/lib/studyml'
 import AITutorTab from '@/components/AITutorTab'
 import DriveTab from '@/components/DriveTab'
@@ -24,6 +24,7 @@ export default function UnitView() {
   const [selectedQuizId, setSelectedQuizId] = useState<number | null>(null)
   const startTimeRef = useRef<number>(Date.now())
   const currentContentIdRef = useRef<number | null>(null)
+  const queryClient = useQueryClient()
 
   const { data: unit, isError: unitError } = useQuery({
     queryKey: ['unit', unitId],
@@ -67,6 +68,18 @@ export default function UnitView() {
     () => flashcardDecks.reduce((sum, deck) => sum + analyzeStudyMl(deck.studyml_content, 'flashcard-deck').flashcardCount, 0),
     [flashcardDecks],
   )
+  
+  const isAdmin = currentUser?.email === 'atanodav@berkeleyprep.org'
+  
+  const deleteContentMutation = useMutation({
+    mutationFn: deleteContent,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['content', unitId] })
+      setActiveTab('study-guide')
+      setSelectedFlashcardId(null)
+      setSelectedQuizId(null)
+    },
+  })
 
   useEffect(() => {
     if (unitError) navigate('/404')
@@ -138,9 +151,11 @@ export default function UnitView() {
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Course
           </Button>
-          <Link to={`/edit/unit/${unitId}`}>
-            <Button variant="outline">Edit Unit</Button>
-          </Link>
+          {isAdmin && (
+            <Link to={`/edit/unit/${unitId}`}>
+              <Button variant="outline">Edit Unit</Button>
+            </Link>
+          )}
         </div>
       </header>
 
@@ -188,7 +203,7 @@ export default function UnitView() {
           {activeTab === 'study-guide' && (
             studyGuide ? (
               <div className="space-y-4">
-                <InlineEditLink href={`/edit/content/${studyGuide.id}`} label="Edit Guide" />
+                {isAdmin && <InlineEditLink href={`/edit/content/${studyGuide.id}`} label="Edit Guide" />}
                 <StudyGuideTab content={studyGuide} />
               </div>
             ) : (
@@ -198,6 +213,7 @@ export default function UnitView() {
                 description="Start with the guide first so the rest of the unit has a strong source of truth."
                 href={`/create/content/${unitId}?type=study-guide`}
                 cta="Create Study Guide"
+                isAdmin={isAdmin}
               />
             )
           )}
@@ -214,19 +230,34 @@ export default function UnitView() {
                       </Button>
                     )}
                   </div>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <Link to={`/create/content/${unitId}?type=flashcard-deck`}>
-                      <Button variant="ghost" size="sm">
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add Another Deck
+                  {isAdmin && (
+                    <div className="flex flex-wrap items-center gap-3">
+                      <Link to={`/create/content/${unitId}?type=flashcard-deck`}>
+                        <Button variant="ghost" size="sm">
+                          <Plus className="mr-2 h-4 w-4" />
+                          Add Another Deck
+                        </Button>
+                      </Link>
+                      <Link to={`/edit/content/${selectedFlashcardDeck.id}`}>
+                        <Button variant="outline" size="sm" className="rounded-full bg-white/90">
+                          Edit Deck
+                        </Button>
+                      </Link>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="rounded-full bg-white/90"
+                        onClick={() => {
+                          if (confirm('Delete this deck?')) {
+                            deleteContentMutation.mutate(selectedFlashcardDeck.id)
+                          }
+                        }}
+                      >
+                        <Trash2 className="mr-2 h-4 w-4 text-destructive" />
+                        Delete Deck
                       </Button>
-                    </Link>
-                    <Link to={`/edit/content/${selectedFlashcardDeck.id}`}>
-                      <Button variant="outline" size="sm" className="rounded-full bg-white/90">
-                        Edit Deck
-                      </Button>
-                    </Link>
-                  </div>
+                    </div>
+                  )}
                 </div>
                 {flashcardDecks.length > 1 && (
                   <div className="flex flex-wrap gap-2">
@@ -263,6 +294,7 @@ export default function UnitView() {
                 }))}
                 createHref={`/create/content/${unitId}?type=flashcard-deck`}
                 createLabel="Add Another Deck"
+                isAdmin={isAdmin}
               />
             ) : (
               <EmptyState
@@ -271,6 +303,7 @@ export default function UnitView() {
                 description="Create one or several decks for definitions, formulas, timelines, or problem types."
                 href={`/create/content/${unitId}?type=flashcard-deck`}
                 cta="Create Flashcards"
+                isAdmin={isAdmin}
               />
             )
           )}
@@ -278,11 +311,30 @@ export default function UnitView() {
           {activeTab === 'quiz' && (
             selectedQuiz ? (
               <div className="space-y-4">
-                <Button variant="ghost" size="sm" onClick={() => setSelectedQuizId(null)}>
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  All Quizzes
-                </Button>
-                <InlineEditLink href={`/edit/content/${selectedQuiz.id}`} label="Edit Quiz" />
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <Button variant="ghost" size="sm" onClick={() => setSelectedQuizId(null)}>
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    All Quizzes
+                  </Button>
+                  {isAdmin && (
+                    <div className="flex flex-wrap items-center gap-3">
+                      <InlineEditLink href={`/edit/content/${selectedQuiz.id}`} label="Edit Quiz" />
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="rounded-full bg-white/90"
+                        onClick={() => {
+                          if (confirm('Delete this quiz?')) {
+                            deleteContentMutation.mutate(selectedQuiz.id)
+                          }
+                        }}
+                      >
+                        <Trash2 className="mr-2 h-4 w-4 text-destructive" />
+                        Delete Quiz
+                      </Button>
+                    </div>
+                  )}
+                </div>
                 <QuizTab content={selectedQuiz} />
               </div>
             ) : quizzes.length > 0 ? (
@@ -298,6 +350,7 @@ export default function UnitView() {
                 }))}
                 createHref={`/create/content/${unitId}?type=quiz`}
                 createLabel="Add Another Quiz"
+                isAdmin={isAdmin}
               />
             ) : (
               <EmptyState
@@ -306,12 +359,13 @@ export default function UnitView() {
                 description="Quizzes make the weak spots visible. Add one after the guide and flashcards feel stable."
                 href={`/create/content/${unitId}?type=quiz`}
                 cta="Create Quiz"
+                isAdmin={isAdmin}
               />
             )
           )}
 
           {activeTab === 'ai-tutor' && <AITutorTab unitId={unitId} />}
-          {activeTab === 'drive' && <DriveTab unitId={unitId} />}
+          {activeTab === 'drive' && <DriveTab unitId={unitId} isAdmin={isAdmin} />}
         </div>
       </main>
     </div>
@@ -345,12 +399,14 @@ function EmptyState({
   description,
   href,
   cta,
+  isAdmin,
 }: {
   icon: typeof FileText
   title: string
   description: string
   href: string
   cta: string
+  isAdmin?: boolean
 }) {
   return (
     <Card className="border-dashed border-black/10 py-16 text-center">
@@ -362,12 +418,14 @@ function EmptyState({
           <h3 className="text-xl font-semibold tracking-[-0.03em] text-black">{title}</h3>
           <p className="mx-auto mt-2 max-w-lg text-sm leading-7 text-black/60">{description}</p>
         </div>
-        <Link to={href}>
-          <Button className="rounded-full">
-            <Plus className="mr-2 h-4 w-4" />
-            {cta}
-          </Button>
-        </Link>
+        {isAdmin && (
+          <Link to={href}>
+            <Button className="rounded-full">
+              <Plus className="mr-2 h-4 w-4" />
+              {cta}
+            </Button>
+          </Link>
+        )}
       </CardContent>
     </Card>
   )
@@ -379,12 +437,14 @@ function DeckGrid({
   items,
   createHref,
   createLabel,
+  isAdmin,
 }: {
   icon: typeof FileText
   label: string
   items: Array<{ id: number; title: string; meta: string; actionLabel: string; onClick: () => void }>
   createHref: string
   createLabel: string
+  isAdmin?: boolean
 }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -405,16 +465,18 @@ function DeckGrid({
           </CardContent>
         </Card>
       ))}
-      <Card className="flex min-h-[168px] flex-col items-center justify-center border-dashed border-black/10">
-        <CardContent className="p-6 text-center">
-          <Link to={createHref}>
-            <Button variant="ghost" size="sm">
-              <Plus className="mr-2 h-4 w-4" />
-              {createLabel}
-            </Button>
-          </Link>
-        </CardContent>
-      </Card>
+      {isAdmin && (
+        <Card className="flex min-h-[168px] flex-col items-center justify-center border-dashed border-black/10">
+          <CardContent className="p-6 text-center">
+            <Link to={createHref}>
+              <Button variant="ghost" size="sm">
+                <Plus className="mr-2 h-4 w-4" />
+                {createLabel}
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }

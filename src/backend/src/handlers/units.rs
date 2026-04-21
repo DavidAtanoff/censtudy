@@ -23,6 +23,10 @@ pub async fn create_unit(
     Path(course_id): Path<i64>,
     Json(unit): Json<CreateUnit>,
 ) -> Result<Json<Unit>, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+    
     // Check course existence only
     if db::get_course_by_id(&state.pool, course_id)
         .await
@@ -67,6 +71,10 @@ pub async fn update_unit(
     Path(id): Path<i64>,
     Json(unit): Json<CreateUnit>,
 ) -> Result<Json<Unit>, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+
     if db::get_unit_by_id(&state.pool, id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
@@ -97,6 +105,10 @@ pub async fn delete_unit(
     Extension(user): Extension<User>,
     Path(id): Path<i64>,
 ) -> Result<StatusCode, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+
     if db::get_unit_by_id(&state.pool, id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?

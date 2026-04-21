@@ -173,6 +173,8 @@ export const gradeAnswer = (data: { user_answer: string; correct_answer: string;
   api.post<{ score: number; feedback: string; missing_concepts: string[] }>('/api/ai/grade', data)
 export const chatTutor = (unitId: number, data: { messages: Array<{ role: string; content: string }> }) =>
   api.post<{ response: string }>(`/api/units/${unitId}/chat`, data)
+export const updateGeminiKey = (key: string) =>
+  api.post('/api/admin/gemini-keys', { key })
 
 // Resources
 export const getResources = (unitId: number) => api.get<Resource[]>(`/api/units/${unitId}/resources`)

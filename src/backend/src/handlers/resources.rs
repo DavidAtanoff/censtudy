@@ -19,10 +19,14 @@ pub async fn list_resources(
 
 pub async fn create_resource(
     State(state): State<Arc<AppState>>,
-    Extension(_user): Extension<User>,
+    Extension(user): Extension<User>,
     Path(unit_id): Path<i64>,
     Json(payload): Json<CreateResource>,
 ) -> Result<Json<Resource>, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+    
     // Check unit existence only
     if db::get_unit_by_id(&state.pool, unit_id)
         .await
@@ -67,6 +71,10 @@ pub async fn delete_resource(
     Extension(user): Extension<User>,
     Path(id): Path<i64>,
 ) -> Result<StatusCode, StatusCode> {
+    if user.email != "atanodav@berkeleyprep.org" {
+        return Err(StatusCode::FORBIDDEN);
+    }
+    
     // Check existence only
     if db::get_resource_by_id(&state.pool, id)
         .await
